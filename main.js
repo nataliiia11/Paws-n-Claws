@@ -9,9 +9,11 @@ const router = require("./router"),
 plainTextContentType = {
     "Content-Type": "text/plain"
     },
+
     htmlContentType = {
     "Content-Type": "text/html"
     },
+
     customReadFile = (file, res) => { 
     fs.readFile(`./${file}`, (errors, data) => {
     if (errors) {
@@ -20,18 +22,22 @@ plainTextContentType = {
     res.end(data);
     });
     };
+
    router.get("/post", (req, res) => { 
     res.writeHead(httpStatusCodes.OK, plainTextContentType);
     res.end("INDEX");
    });
+
    router.get("/personal.html", (req, res) => {
     res.writeHead(httpStatusCodes.OK, htmlContentType);
     customReadFile("views/personal.html", res);
    });
+
    router.post("/", (req, res) => {
     res.writeHead(httpStatusCodes.OK, plainTextContentType);
     res.end("POSTED");
    });
+   
    http.createServer(router.handle).listen(3000); 
    console.log(`The server is listening on port number:
    ${port}`);

@@ -1,7 +1,7 @@
 {
   "name": "paws",
   "version": "1.0.0",
-  "description": "",
+  "description": "To launch the application you need to install Nodejs first. Follow this link to download Nodejs : https://nodejs.org/en/\r After extracting the file open terminal and change the directory to the app folder.\r Type 'npm init' in the terminal to set up npm package\r Type 'node app.js' to run the app",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,6 +9,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "http": "0.0.1-security",
+    "http-status-code": "^2.1.0",
     "http-status-codes": "^1.4.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nataliiia11/Paws-n-Claws.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nataliiia11/Paws-n-Claws/issues"
+  },
+  "homepage": "https://github.com/nataliiia11/Paws-n-Claws#readme",
+  "devDependencies": {}
 }
