@@ -32,6 +32,11 @@ plainTextContentType = {
     res.writeHead(httpStatusCodes.OK, htmlContentType);
     customReadFile("views/personal.html", res);
    });
+   router.get("/newsfeed.html", (req, res) => {
+    res.writeHead(httpStatusCodes.OK, htmlContentType);
+    customReadFile("views/newsfeed.html", res);
+   });
+
 
    router.post("/", (req, res) => {
     res.writeHead(httpStatusCodes.OK, plainTextContentType);
