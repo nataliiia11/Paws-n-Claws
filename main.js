@@ -20,7 +20,7 @@ plainTextContentType = {
     res.end(data);
     });
     };
-    router.get("/homepage.html", (req, res) => {
+    router.get("/newsfeed.html", (req, res) => {
         res.writeHead(httpStatusCodes.OK, htmlContentType);
         customReadFile("views/homepage.html", res);
        });
