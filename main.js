@@ -20,10 +20,10 @@ plainTextContentType = {
     res.end(data);
     });
     };
-   router.get("/post", (req, res) => { 
-    res.writeHead(httpStatusCodes.OK, plainTextContentType);
-    res.end("INDEX");
-   });
+    router.get("/homepage.html", (req, res) => {
+        res.writeHead(httpStatusCodes.OK, htmlContentType);
+        customReadFile("views/homepage.html", res);
+       });
    router.get("/personal.html", (req, res) => {
     res.writeHead(httpStatusCodes.OK, htmlContentType);
     customReadFile("views/personal.html", res);
