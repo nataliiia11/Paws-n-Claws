@@ -1,38 +1,19 @@
 
-const port = 3000,
-http = require("http"),
-httpStatusCodes = require("http-status-codes"),
-fs = require("fs");
-var path = require("path");
-const router = require("./router"),
+const port = 3000;
+const express=require('express');
+const ejs= require('ejs')
+const bodyParser = require('body-parser')
+const app= new express();
+app.set('view engine','ejs')
+app.use(bodyParser.urlencoded({extended:true}));
+app.use(express.static("public"));
 
-plainTextContentType = {
-    "Content-Type": "text/plain"
-    },
-    htmlContentType = {
-    "Content-Type": "text/html"
-    },
-    customReadFile = (file, res) => { 
-    fs.readFile(`./${file}`, (errors, data) => {
-    if (errors) {
-    console.log("Error reading the file...");
-    }
-    res.end(data);
-    });
-    };
-    router.get("/newsfeed.html", (req, res) => {
-        res.writeHead(httpStatusCodes.OK, htmlContentType);
-        customReadFile("views/homepage.html", res);
-       });
-   router.get("/personal.html", (req, res) => {
-    res.writeHead(httpStatusCodes.OK, htmlContentType);
-    customReadFile("views/personal.html", res);
-   });
-   router.post("/", (req, res) => {
-    res.writeHead(httpStatusCodes.OK, plainTextContentType);
-    res.end("POSTED");
-   });
-   http.createServer(router.handle).listen(3000); 
-   console.log(`The server is listening on port number:
-   ${port}`);
-//commentq
+app.get('/:page',(req,res)=>{
+    const definedPage=req.params.page
+    res.render(definedPage)
+})
+app.post('/personal',(req,res)=>
+console.log(req.body.newPost))
+
+app.listen(3000,()=>
+console.log("Listening on Port 3000"))
