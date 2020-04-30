@@ -12,8 +12,13 @@ app.get('/:page',(req,res)=>{
     const definedPage=req.params.page
     res.render(definedPage)
 })
-app.post('/personal',(req,res)=>
-console.log(req.body.newPost))
+app.post('/personal',(req,res)=>{
+post=req.body.newPost;
+res.render('personal',{newPost:post});
+
+}
+)
+//
 
 app.listen(3000,()=>
 console.log("Listening on Port 3000"))

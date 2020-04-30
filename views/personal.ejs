@@ -55,11 +55,14 @@
                         </ul>
                     </div>
                     <div class="card-body">
+                        <form action="/personal" method="post">
                         <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab">
                                 <div class="form-group">
+                                    
                                     <label class="sr-only" for="message">post</label>
-                                    <textarea class="form-control" id="message" rows="3" placeholder="What are you thinking?"></textarea>
+                                    <textarea name="newPost" class="form-control" id="message" rows="3" placeholder="What are you thinking?"></textarea>
+                                
                                 </div>
 
                             </div>
@@ -89,11 +92,13 @@
                                 </div>
                             </div>
                         </div>
+                    </form>
                     </div>
                 </div>
                 <!-- Post /////-->
 
                 <!--- \\\\\\\Post-->
+    
                 <div class="card gedf-card">
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center">
@@ -102,8 +107,8 @@
                                     <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="">
                                 </div>
                                 <div class="ml-2">
-                                    <div class="h5 m-0">@LeeCross</div>
-                                    <div class="h7 text-muted">Miracles Lee Cross</div>
+                                    <div class="h5 m-0">@User</div>
+                                    <div class="h7 text-muted">User</div>
                                 </div>
                             </div>
                             <div>
@@ -125,12 +130,11 @@
                     <div class="card-body">
                         <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>10 min ago</div>
                         <a class="card-link" href="#">
-                            <h5 class="card-title">Lorem ipsum dolor sit amet, consectetur adip.</h5>
+                            <h5 class="card-title">title</h5>
                         </a>
 
                         <p class="card-text">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo recusandae nulla rem eos ipsa praesentium esse magnam nemo dolor
-                            sequi fuga quia quaerat cum, obcaecati hic, molestias minima iste voluptates.
+                         <%=newPost%>
                         </p>
                     </div>
                     <div class="card-footer">
@@ -143,7 +147,7 @@
 
 
                 <!--- \\\\\\\Post-->
-                <div class="card gedf-card">
+                <!-- <div class="card gedf-card">
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex justify-content-between align-items-center">
@@ -199,12 +203,12 @@
                         <a href="#" class="card-link"><i class="fa fa-comment"></i> Comment</a>
                         <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Share</a>
                     </div>
-                </div>
+                </div> -->
                 <!-- Post /////-->
 
 
                 <!--- \\\\\\\Post-->
-                <div class="card gedf-card">
+                <!-- <div class="card gedf-card">
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex justify-content-between align-items-center">
@@ -229,9 +233,9 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
-                    </div>
+                    <!-- </div>
                     <div class="card-body">
                         <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i> Hace 40 min</div>
                         <a class="card-link" href="#">
@@ -251,13 +255,13 @@
                         <a href="#" class="card-link"><i class="fa fa-comment"></i> Comment</a>
                         <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Share</a>
                     </div>
-                </div>
+                </div> -->
                 <!-- Post /////-->
 
 
 
             </div>
-            <div class="col-md-3">
+            <!-- <div class="col-md-3">
                 <div class="card gedf-card">
                     <div class="card-body">
                         <h5 class="card-title">Card title</h5>
@@ -278,6 +282,6 @@
                             <a href="#" class="card-link">Another link</a>
                         </div>
                     </div>
-            </div>
+            </div> -->
         </div>
     </div>
