@@ -7,6 +7,7 @@
     padding: 0.5rem 1rem;
     background:#683B2B;
     color: #f2f2f2;
+     
 }
 
 input[type=search] {
@@ -25,6 +26,11 @@ input[type=search]:focus {
 body {
     background-color: #eeeeee;
 }
+
+body > .navbar{
+    margin-bottom: 20px !important;
+    
+    }
 
 .h7 {
     font-size: 0.8rem;

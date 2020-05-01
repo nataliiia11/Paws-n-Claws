@@ -14,10 +14,19 @@ app.get('/:page',(req,res)=>{
 })
 app.post('/personal',(req,res)=>{
 post=req.body.newPost;
+console.log(post);
 res.render('personal',{newPost:post});
 
 }
 )
+
+app.post('/newsfeed',(req,res)=>{
+    post1=req.body.newPost;
+    console.log(post1);
+    res.render('newsfeed',{newPost:post1});
+    
+    }
+    )
 //
 
 app.listen(3000,()=>
