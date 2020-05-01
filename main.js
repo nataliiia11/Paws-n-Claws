@@ -7,23 +7,23 @@ const app= new express();
 app.set('view engine','ejs')
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static("public"));
-
+const posts=["first post from user"];
 app.get('/:page',(req,res)=>{
     const definedPage=req.params.page
-    res.render(definedPage)
+    res.render(definedPage,{newPost:posts});
 })
 app.post('/personal',(req,res)=>{
 post=req.body.newPost;
-console.log(post);
-res.render('personal',{newPost:post});
+posts.push(post);
+res.render('personal',{newPost:posts});
 
 }
 )
 
 app.post('/newsfeed',(req,res)=>{
-    post1=req.body.newPost;
-    console.log(post1);
-    res.render('newsfeed',{newPost:post1});
+    post=req.body.newPost;
+    posts.push(post);
+    res.render('newsfeed',{newPost:posts});
     
     }
     )
