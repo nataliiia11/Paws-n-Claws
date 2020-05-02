@@ -14,7 +14,7 @@ database.once("open", () => {
 })
 const PersonSchema = mongoose.Schema({
     name : String,
-    email : String
+    email : String 
 });
 
 const Person = mongoose.model("Person", PersonSchema);

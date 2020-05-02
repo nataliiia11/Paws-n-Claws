@@ -1,0 +1,92 @@
+body{
+    background:linear-gradient(to bottom right, white, #ded1bd);
+    margin: 0;
+}
+#header{
+    background: #683b2b;
+    margin:  0;
+    position: fixed; 
+    height: 60px;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+
+h1{
+    color: white;
+}
+
+#parallax {
+    transform: translate(0,60px);
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.highlights{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-bottom: 10px;
+    margin: 0;
+    position: relative;
+}
+
+.highlights:nth-child(3) {
+    padding: 0;
+}
+
+.highlights-background{
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    padding: 0;
+    margin: 0;
+}
+
+.highlights-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    margin: 0;
+    padding: 100px;
+    background: rgba(70,70,70,0.7);
+    text-align: center;
+    border-radius: 25px;
+}
+
+.highlights:nth-child(1) > .highlights-background {
+    background-image: url(../resources/Images/petDogCat.jpg);
+}
+
+
+.highlights:nth-child(2) > .highlights-background {
+    background-image: url(../resources/Images/41984-Playful-Pug-puppy-talk-to-the-paw!-white-background.jpg);
+    
+}
+
+.highlights:nth-child(3) > .highlights-background {
+    background-image: url(../resources/Images/Cat_Paws_Up_Close_-_WHITE.JPG);
+}
+
+.highlights:nth-child(2) > .highlights-content > ul {
+    list-style: none;
+    padding: 0;
+    text-align: center;
+}
+
+#login-direction {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(170,170,170,0.7);
+    padding: 20px;
+    color: white;
+    border-radius: 15px;
+}
