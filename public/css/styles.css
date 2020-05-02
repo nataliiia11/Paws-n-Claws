@@ -7,6 +7,7 @@
     padding: 0.5rem 1rem;
     background:#683B2B;
     color: #f2f2f2;
+     
 }
 
 input[type=search] {
@@ -26,8 +27,18 @@ body {
     background-color: #eeeeee;
 }
 
+body > .navbar{
+    margin-bottom: 20px !important;
+    
+    }
+
 .h7 {
     font-size: 0.8rem;
+}
+
+.btn-primary {
+    background-color: #d49e8d !important;
+    border-color: white;
 }
 
 .gedf-wrapper {
