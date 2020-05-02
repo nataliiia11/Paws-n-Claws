@@ -36,6 +36,11 @@ body > .navbar{
     font-size: 0.8rem;
 }
 
+.btn-primary {
+    background-color: #d49e8d !important;
+    border-color: white;
+}
+
 .gedf-wrapper {
     margin-top: 0.97rem;
 }
