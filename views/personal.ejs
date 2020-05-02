@@ -1,0 +1,56 @@
+<%- include('partials/header'); -%>
+<body>
+  <form action='/personal' method='post'>
+  
+    
+  <div class="container-fluid">
+    <div class="row">
+
+    <div class="col-2 text-center">
+      <img src="//placehold.it/150" class="mx-auto img-fluid img-circle d-block" alt="avatar" style="border-radius: 50%;">
+      <h6 class="mt-2">Upload a different photo</h6>
+      <label class="custom-file">
+          <input type="file" id="file" class="custom-file-input">
+          <span class="custom-file-control">Choose file</span>
+      </label>
+  </div>
+  <div class="col-6">
+    <%- include('partials/post'); -%>
+    <%- include('newpost'); -%>
+  </div>
+    <div class="col-4 text-left ">
+        <div class="col-lg-8 order-lg-2">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a href="" data-target="#profile" data-toggle="tab" class="nav-link active">Profile</a>
+                </li>
+
+                <li class="nav-item">
+                  <a href="" data-target="#editprofile" data-toggle="tab" class="nav-link active">Edit profile</a>
+              </li>
+               
+            </ul>
+            <div class="tab-content py-4">
+                <div class="tab-pane active" id="profile">
+                    <h5 class="mb-3">My profile</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>About</h6>
+                            <p>
+                              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.
+                            </p>
+                            <h6>Hobbies</h6>
+                            <p>
+                              Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi.
+                            </p>
+                        </div>
+                        
+                      
+                
+           
+        </div>
+      </div> 
+    </div>
+</div>
+</form>
+</body>
