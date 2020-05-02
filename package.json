@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/nataliiia11/Paws-n-Claws#readme",
   "dependencies": {
+    "ejs": "^3.1.2",
+    "express": "^4.17.1",
     "http-status-codes": "^1.4.0",
     "mongodb": "^3.5.7",
     "mongoose": "^5.9.11"
