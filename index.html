@@ -5,6 +5,21 @@
         <meta name="viewport" content="width=device-width">
         <title>Paws And Claws</title>
         <link rel="stylesheet" type="text/css" href="Style/home.css">
+        <script>
+            window.onload = () => {
+                console.log("windows loaded");                
+            }
+            
+            var showLoginForm = function () {
+                document.getElementById("login-form-container").style.display = "flex";
+                document.getElementById("parallax").style.display = "none";    
+            }
+            
+            var closeLoginForm = function () {
+                document.getElementById("login-form-container").style.display = "none";
+                document.getElementById("parallax").style.display = "flex"; 
+            }
+        </script>
     </head>
 
     <body>
@@ -39,8 +54,21 @@
         </div>
         
         <div id="login-container">
-            <section id="login-direction">Login to start Using</section>
+            <section id="login-direction" onclick="showLoginForm()">Login to start Using</section>
+            <div id="login-form-container">
+                <span id="close-login-form-container-button" onclick="closeLoginForm()">&#10006;</span>
+                <form id="login-form">
+                    <section id="username-container">
+                        <label>Username</label>
+                        <Input type="text" placeholder="username"></Input>
+                    </section>
+                    <section id="password-container">
+                        <lable>Password</lable>
+                        <Input type="password" placeholder="password"></Input>
+                    </section>
+                    <button value="login">Log In</button>
+                </form>
+            </div>
         </div>
-
     </body>
 </html>
