@@ -1,16 +1,36 @@
 {
-  "name": "paws",
+  "name": "workspace",
   "version": "1.0.0",
+<<<<<<< HEAD
   "description": "",
+=======
+  "description": "To launch the application you need to install Nodejs first. Follow this link to download Nodejs : https://nodejs.org/en/\r After extracting the file open terminal and change the directory to the app folder.\r Type 'npm init' in the terminal to set up npm package\r Type 'node app.js' to run the app",
+>>>>>>> bb81037eb9a1b9e4f81459024bdcb968f7bc5c64
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nataliiia11/Paws-n-Claws.git"
+  },
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nataliiia11/Paws-n-Claws/issues"
+  },
+  "homepage": "https://github.com/nataliiia11/Paws-n-Claws#readme",
   "dependencies": {
+<<<<<<< HEAD
     "body-parser": "^1.19.0",
     "ejs": "^3.1.2",
     "express": "^4.17.1"
   }
+=======
+    "http-status-codes": "^1.4.0",
+    "mongodb": "^3.5.7",
+    "mongoose": "^5.9.11"
+  },
+  "devDependencies": {}
+>>>>>>> bb81037eb9a1b9e4f81459024bdcb968f7bc5c64
 }
