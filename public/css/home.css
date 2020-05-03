@@ -62,17 +62,17 @@ h1{
 }
 
 .highlights:nth-child(1) > .highlights-background {
-    background-image: url(../resources/Images/petDogCat.jpg);
+    background-image: url(../Images/petDogCat.jpg);
 }
 
 
 .highlights:nth-child(2) > .highlights-background {
-    background-image: url(../resources/Images/41984-Playful-Pug-puppy-talk-to-the-paw!-white-background.jpg);
+    background-image: url(../Images/41984-Playful-Pug-puppy-talk-to-the-paw!-white-background.jpg);
     
 }
 
 .highlights:nth-child(3) > .highlights-background {
-    background-image: url(../resources/Images/Cat_Paws_Up_Close_-_WHITE.JPG);
+    background-image: url(../Images/Cat_Paws_Up_Close_-_WHITE.JPG);
 }
 
 .highlights:nth-child(2) > .highlights-content > ul {
