@@ -12,6 +12,7 @@ app.get('/', (req,res) => {
 app.set('view engine','ejs')
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static("public"));
+app.use(express.static('public'));
 const posts=[];
 app.get('/:page',(req,res)=>{
     const definedPage=req.params.page
