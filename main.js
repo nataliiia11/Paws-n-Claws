@@ -35,3 +35,13 @@ app.post('/newsfeed',(req,res)=>{
 
 app.listen(3000,()=>
 console.log("Listening on Port 3000"))
+
+
+//mongoose implementation
+const mongoose = require("mongoose");
+mongoose.connect('mongodb://localhost/PawsAndClaws', {useNewUrlParser: true, useUnifiedTopology: true});
+var database = mongoose.connection;
+database.on("error", console.error.bind(console, 'Connection error'));
+database.once("open", () => {
+    console.log("Connection to database Paws And Claws succesfull.")
+})
