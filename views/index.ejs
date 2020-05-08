@@ -4,10 +4,12 @@
     <head>
         <meta name="viewport" content="width=device-width">
         <title>Paws And Claws</title>
-        <link rel="stylesheet" type="text/css" href="css/home.css">
+        <link rel="stylesheet" type="text/css" href="../public/css/home.css">
         <script>
             window.onload = () => {
-                console.log("windows loaded");                
+                console.log("windows loaded"); 
+                document.getElementById("login-form-container").style.display = "none";
+                document.getElementById("parallax").style.display = "flex";               
             }
             
             var showLoginForm = function () {
@@ -57,16 +59,22 @@
             <section id="login-direction" onclick="showLoginForm()">Login to start Using</section>
             <div id="login-form-container">
                 <span id="close-login-form-container-button" onclick="closeLoginForm()">&#10006;</span>
-                <form id="login-form">
+                <form action="/" method="post" id="login-form">
                     <section id="username-container">
                         <label>Username</label>
-                        <Input type="text" placeholder="username"></Input>
+                        <Input type="text" name="username" placeholder="username"></Input>
+                    </section>
+                    <section id="email-container">
+                        <lable>Email</lable>
+                        <Input type="text" name="email" placeholder="email"></Input>
                     </section>
                     <section id="password-container">
                         <lable>Password</lable>
-                        <Input type="password" placeholder="password"></Input>
+                        <Input type="password" name="pass" placeholder="password"></Input>
                     </section>
-                    <button value="login">Log In</button>
+
+                  
+                    <button type="submit" value="login">Sign Up</button>
                 </form>
             </div>
         </div>
