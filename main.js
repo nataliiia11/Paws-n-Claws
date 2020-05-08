@@ -5,6 +5,8 @@ const ejs= require('ejs')
 const path = require('path');
 const bodyParser = require('body-parser')
 const app= new express();
+homeController = require("./Controller/homeController"),
+errorController = require("./Controller/errorController"),
 app.use("/public", express.static(path.join(__dirname,"public")));
 app.get('/', (req,res) => {
     res.render("index");
@@ -12,12 +14,15 @@ app.get('/', (req,res) => {
 app.set('view engine','ejs')
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static("public"));
-app.use(express.static('public'));
+
 const posts=[];
-app.get('/:page',(req,res)=>{
-    const definedPage=req.params.page
-    res.render(definedPage,{newPost:posts,page:definedPage});
-})
+// app.get('/:page',(req,res)=>{
+//     const definedPage=req.params.page
+//     res.render(definedPage,{newPost:posts,page:definedPage});
+// })
+
+app.get("/personal", homeController.showPosts);
+
 app.post('/personal',(req,res)=>{
 post=req.body.newPost;
 posts.push(post);
