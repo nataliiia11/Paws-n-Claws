@@ -46,3 +46,8 @@ database.on("error", console.error.bind(console, 'Connection error'));
 database.once("open", () => {
     console.log("Connection to database Paws And Claws succesfull.")
 })
+
+//use user controller
+const userController = require("./Controller/UserController");
+app.post("/", userController.findAny);
+app.get("/users", userController.findAll);
