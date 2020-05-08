@@ -124,7 +124,7 @@ h1{
     flex-direction: column;
 }
 
-#username-container, #password-container{
+#username-container, #password-container,#email-container{
     width: 25vw;
     background: rgba(152, 139, 119,1);
     display: flex;
@@ -134,7 +134,7 @@ h1{
     color: rgba(202, 189, 169,1);
 }
 
-#username-container > input, #password-container > input {
+#username-container > input, #password-container > input,#email-container>input {
     background: rgba(152, 139, 119,1);
     border: none;
     color: rgba(202, 189, 169,1);
@@ -143,7 +143,7 @@ h1{
     padding-bottom: 5px;
 }
 
-#username-container > input::placeholder, #password-container > input::placeholder {
+#username-container > input::placeholder, #password-container > input::placeholder, #email-container > input::placeholder {
     color: rgba(172, 159, 139,1);
     font-weight: bolder;
     font-size: 16px;
@@ -159,7 +159,7 @@ button {
     color: rgba(202, 189, 169,1);
 }
 
-#username-container > input:focus, #username-container > input:focus::placeholder, #password-container > input:focus, #password-container > input:focus::placeholder {
+#username-container > input:focus, #username-container > input:focus::placeholder, #password-container > input:focus, #password-container > input:focus::placeholder,#email-container > input:focus, #email-container > input:focus::placeholder {
     color: rgba(222, 209, 189,1);
 }
 
