@@ -10,8 +10,9 @@ const multer = require('multer');
 const upload = multer({dest: __dirname + '/uploads/images'});
 postController = require("./Controller/postController"),
 errorController = require("./Controller/errorController"),
-userController = require("./Controller/UserController"),
+
 app.use("/public", express.static(path.join(__dirname,"public")));
+app.use('/user', userRouter)
 
 app.set('view engine','ejs')
 app.use(bodyParser.urlencoded({extended:true}));
@@ -70,9 +71,3 @@ database.on("error", console.error.bind(console, 'Connection error'));
 database.once("open", () => {
     console.log("Connection to database Paws And Claws succesfull.")
 })
-
-
-// app.post('/',userController.saveUser)
-app.post('/',(req,res)=>
-res.redirect('/personal'))
-

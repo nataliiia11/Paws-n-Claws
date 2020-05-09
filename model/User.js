@@ -3,9 +3,22 @@ const mongoose = require("mongoose");
 
 //password will be changed into hash next update
 var userSchema = mongoose.Schema({
-    username : String,
-    email : String,
-    password : String
+    username : {
+        type : String,
+        unique : true,
+        required : true,
+        trim : true
+    },
+    email : {
+        type : String,
+        unique : true,
+        required : true,
+        trim : true
+    },
+    password : {
+        type : String, 
+        required : true
+    }
 });
 
 userSchema.statics.init = (User) => {

@@ -1,35 +1,42 @@
 const Users = require("../model/user");
+Users.init();
+const fields = ['username', 'email', 'password']
 
-exports.getAllUsers = (req, res) => { 
+//initialize database
+const mongoose = require("mongoose");
+mongoose.connect("mongodb://localhost/PawsAndClaws", () => {
+    Users.init();
+}
+)
+
+exports.findAllUser = (req, res, next) => {
     Users.find({})
-    .exec()
-    .then((users) => {
-    res.render("users", {
-    users: users
-    });
-    })
-    .catch((error) => {
-    console.log(error.message);
-    return [];
-    })
+        .exec()
+        .then((users) => {
+            res.send(users)
+        })
+}
+
+exports.saveUser = (req, res, next) => {
+    let user = {
+        'username' : req.params.username,
+        'email'  : req.params.email,
+        'password' : req.params.password}
+    const newUser = new Users(user)
+    newUser.save(newUser)
+        .then(() => {
+                res.send(newUser);
+        })
+}
+
+exports.signIn = (req,res, next) => {
+    let user = {
+        'username' : req.params.username,
+        'password' : req.params.password
+    }
+
+    Users.exists(user)
     .then(() => {
-    console.log("promise complete");
-    });
-   };
-   exports.SignInPage = (req, res) => { 
-    res.render("/");
-   };
-   exports.saveUser = (req, res) => { 
-    let newUser = new User( {
-    name: req.body.name,
-    email: req.body.email,
-    password: req.body.password
-    });
-    newUser.save()
-    .then( () => {
-    res.redirect('/personal');
+        res.send(true)
     })
-    .catch(error => {
-    res.send(error);
-    });
-   };
+}
