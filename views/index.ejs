@@ -14,7 +14,7 @@
             
             var showLoginForm = function () {
                 document.getElementById("login-form-container").style.display = "flex";
-                document.getElementById("autofocused").focus();
+                document.getElementById("username").focus();
                 document.getElementById("parallax").style.display = "none";    
             }
             
@@ -26,10 +26,63 @@
                 document.getElementById("sign-up-button").style.display = "none";
             }
 
-            var signUp = function () {
+            var signUpButton = function () {
                 document.getElementById("email-container").style.display = "flex";
                 document.getElementById("sign-in-button").style.display = "none";
                 document.getElementById("sign-up-button").style.display = "block";
+            }
+
+            var showAll = function () {
+                var xhr = new XMLHttpRequest();
+                xhr.open('Get', "/user", true);
+                xhr.send();
+                xhr.onreadystatechange = function() {
+                    if(xhr.readyState == 4 && xhr.status == 200) {
+                        var result = JSON.stringify(xhr.response);
+                        console.log(result);
+                    }
+                }
+            }
+
+            var signIn = function () {
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', "/user/signin/", true);
+                xhr.setRequestHeader("content-type", "application/json;charset=UTF-8");
+                xhr.send(JSON.stringify({
+                    "username" : document.getElementById("username").value,
+                    "password" : document.getElementById("password").value
+                }))
+                xhr.onreadystatechange = function() {
+                    if(xhr.readyState == 4 && xhr.status == 200) {
+                        if(xhr.response == "false") {
+                            window.alert("Wrong username or password");
+                        } else{
+                            location.replace("/personal")
+                        }
+                    }
+                }
+            }
+
+            var signUp = function() {
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', "/user/signup/", true);
+                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                xhr.send(JSON.stringify({
+                    "username" : document.getElementById("username").value,
+                    "email" : document.getElementById("email").value,
+                    "password" : document.getElementById("password").value
+                }))
+                xhr.onreadystatechange = function () {
+                    if(xhr.readyState == 4 && xhr.status == 200) {
+                        if(xhr.response == "false") {
+                            window.alert("Please fill all the spaces!\nor\nUsername and Email is already registered!")
+                        } else {
+                            document.getElementById("sign-in-button").style.display = "block";
+                            document.getElementById("sign-up-button").style.display = "none";
+                            document.getElementById("email-container").style.display = "flex";
+                        }
+                    }
+                }
             }
         </script>
     </head>
@@ -72,21 +125,21 @@
                 <form action="/" method="post" id="login-form">
                     <section id="username-container">
                         <label>Username</label>
-                        <Input id="autofocused" type="text" name="username" placeholder="username"></Input>
+                        <Input id="username" type="text" name="username" placeholder="username"></Input>
                     </section>
                     <section id="email-container">
                         <lable>Email</lable>
-                        <Input type="text" name="email" placeholder="email"></Input>
+                        <Input id="email" type="text" name="email" placeholder="email"></Input>
                     </section>
                     <section id="password-container">
                         <lable>Password</lable>
-                        <Input type="password" name="pass" placeholder="password"></Input>
+                        <Input id="password" type="password" name="pass" placeholder="password"></Input>
                     </section>
 
                   
-                    <button id="sign-in-button" type="submit" value="login">Sign In</button>
-                    <button id="sign-up-button" type="submit" value="login">Sign Up</button>
-                    <a id="signup">Haven't got an account yet? <span onclick="signUp()">sign up</span></a>
+                    <input type="button" id="sign-in-button" value="Sign In" onclick="signIn()"></input>
+                    <input type="button" id="sign-up-button" value="Sign Up" onclick="signUp()"></input>
+                    <a id="signup">Haven't got an account yet? <span onclick="signUpButton()">sign up</span></a>
                 </form>
             </div>
         </div>

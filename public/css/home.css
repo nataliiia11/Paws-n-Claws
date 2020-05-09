@@ -155,7 +155,7 @@ h1{
 }
 
 
-button {
+#sign-in-button, #sign-up-button {
     min-width: 200px;
     width: 25vw;
     background: rgba(172, 159, 139,0.5);

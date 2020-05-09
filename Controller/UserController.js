@@ -1,5 +1,5 @@
 const Users = require("../model/user");
-Users.init();
+const bcrypt = require("bcrypt");
 const fields = ['username', 'email', 'password']
 
 //initialize database
@@ -10,33 +10,40 @@ mongoose.connect("mongodb://localhost/PawsAndClaws", () => {
 )
 
 exports.findAllUser = (req, res, next) => {
-    Users.find({})
+    Users.find()
         .exec()
         .then((users) => {
-            res.send(users)
+           return res.send(users)
         })
 }
 
 exports.saveUser = (req, res, next) => {
+    var password = "";
+    if(req.body.password != "") password = bcrypt.hashSync(req.body.password, 10);
+    console.log(req.body.password);
     let user = {
-        'username' : req.params.username,
-        'email'  : req.params.email,
-        'password' : req.params.password}
-    const newUser = new Users(user)
-    newUser.save(newUser)
-        .then(() => {
-                res.send(newUser);
-        })
+        'username' : req.body.username,
+        'email'  : req.body.email,
+        'password' : password};
+
+    const newUser = new Users(user);
+
+    newUser.save(newUser, (err, result) => {
+        if (err) {
+            return res.send(false);
+        }
+        return res.send(true);
+    })
 }
 
 exports.signIn = (req,res, next) => {
-    let user = {
-        'username' : req.params.username,
-        'password' : req.params.password
-    }
-
-    Users.exists(user)
-    .then(() => {
-        res.send(true)
-    })
+    res.type("application/json")
+    Users.findOne({"username" : req.body.username})
+    .then((result) => {
+        let checkUser = result;
+        bcrypt.compare(req.body.password, checkUser.password, (err, result) => {
+            if (err) throw err;
+            return res.send(result);
+        })
+    }) 
 }

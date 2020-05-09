@@ -1,7 +1,8 @@
 "use strict";
 const mongoose = require("mongoose");
+const uniqueValidator = require('mongoose-unique-validator');
 
-//password will be changed into hash next update
+
 var userSchema = mongoose.Schema({
     username : {
         type : String,
@@ -13,7 +14,8 @@ var userSchema = mongoose.Schema({
         type : String,
         unique : true,
         required : true,
-        trim : true
+        trim : true,
+        uniqueCaseInsensitive : true
     },
     password : {
         type : String, 
@@ -21,17 +23,5 @@ var userSchema = mongoose.Schema({
     }
 });
 
-userSchema.statics.init = (User) => {
-    let user = [{
-        "username" : "a",
-        "email" : "aaaa@outlook.com",
-        "password" : "thispassword"
-    },
-    {
-        "username" : "b",
-        "email" : "bbbb@gmail.com",
-        "password" : "thatpassword"
-    }]
-}
-
+userSchema.plugin(uniqueValidator);
 module.exports = mongoose.model("User", userSchema);

@@ -8,6 +8,7 @@ const bodyParser = require('body-parser')
 const app= new express();
 const multer = require('multer');
 const upload = multer({dest: __dirname + '/uploads/images'});
+const userRouter = require("./Router/userRouter")
 postController = require("./Controller/postController"),
 errorController = require("./Controller/errorController"),
 
