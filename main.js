@@ -1,10 +1,13 @@
 
 const port = 3000;
+
 const express=require('express');
 const ejs= require('ejs')
 const path = require('path');
 const bodyParser = require('body-parser')
 const app= new express();
+const multer = require('multer');
+const upload = multer({dest: __dirname + '/uploads/images'});
 postController = require("./Controller/postController"),
 errorController = require("./Controller/errorController"),
 userController = require("./Controller/UserController"),
@@ -26,7 +29,7 @@ app.get('/',(req,res)=>{
     res.render('index')
 })
 
-
+app.post('/personal/delete',postController.deletePost)
 
 
 //old post to personal
@@ -39,14 +42,22 @@ app.get('/',(req,res)=>{
 //)
 app.post('/personal',postController.savePost)
 
-app.post('/newsfeed',(req,res)=>{
-    post=req.body.newPost;
-    posts.push(post);
-    res.render('newsfeed',{newPost:posts,page:"newsfeed"});
+// app.post('/newsfeed',(req,res)=>{
+//     post=req.body.newPost;
+//     posts.push(post);
+//     res.render('newsfeed',{newPost:posts,page:"newsfeed"});
     
-    }
-    )
+//     }
+//     )
+    app.post('/upload', upload.single('photo'), (req, res) => {
+        if(req.file) {
+            res.json(req.file);
+        }
+            else throw 'error'
+    });
 
+   
+      
 app.listen(3000,()=>
 console.log("Listening on Port 3000"))
 

@@ -6,7 +6,8 @@ exports.getAllPostsPersonal = (req, res) => {
     .then((posts) => {
     res.render('personal', {
     newPost:posts,
-page:'personal'
+page:'personal',
+
     });
     })
     .catch((error) => {
@@ -14,7 +15,7 @@ page:'personal'
     return [];
     })
     .then(() => {
-    Posts.deleteMany({});
+        console.log("promise complete");
     });
    };
    
@@ -49,3 +50,12 @@ page:'newsfeed'
     res.send(error);
     });
    };
+
+   exports.deletePost=(req,res)=>{
+    const selectedPost=req.body.selected
+    if (selectedPost.match(/^[0-9a-fA-F]{24}$/)) {
+        Posts.findByIdAndDelete(selectedPost,(err) => {
+            if (err) console.log(err)
+            else { res.redirect('/personal') }})
+      }
+ }

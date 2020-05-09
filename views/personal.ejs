@@ -30,19 +30,19 @@ $(document).ready(function() {
     <div class="row">
 
     <div class="col-2 text-center">
-      <!-- <img src="//placehold.it/150" class="mx-auto img-fluid img-circle d-block" alt="avatar" style="border-radius: 50%;">
-      <h6 class="mt-1">Upload a different photo</h6>
-      <label class="custom-file">
-          <input type="file" id="file" class="custom-file-input">
-          <span class="custom-file-control">Choose file</span>
-      </label> -->
+       
+
       <div class="avatar-wrapper">
         <img class="profile-pic" src="" />
         <div class="upload-button">
           <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
         </div>
-        <input class="file-upload" type="file" accept="image/*"/>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+        <input class="file-upload" type="file" accept="image/*" name="photo"/>
+        <input type='submit' value='upload' />
+      </form>
       </div>
+
   </div>
   <div class="col-6">
     <%- include('partials/post'); -%>
