@@ -1,0 +1,20 @@
+<h1>List of sign up users</h1>
+
+<table class="table" id = "course_overview">
+    <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Password</th>
+       
+    </tr>
+
+    <% users.forEach(user => { %>
+    <tr>
+        <td><%= user.name %></td>
+        <td><%= user.email %></td>
+        <td><%= user.password %></td>
+       
+    </tr>
+
+    <% }); %>
+</table>
