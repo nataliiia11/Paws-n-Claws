@@ -14,12 +14,22 @@
             
             var showLoginForm = function () {
                 document.getElementById("login-form-container").style.display = "flex";
+                document.getElementById("autofocused").focus();
                 document.getElementById("parallax").style.display = "none";    
             }
             
             var closeLoginForm = function () {
                 document.getElementById("login-form-container").style.display = "none";
                 document.getElementById("parallax").style.display = "flex"; 
+                
+                document.getElementById("sign-in-button").style.display = "block";
+                document.getElementById("sign-up-button").style.display = "none";
+            }
+
+            var signUp = function () {
+                document.getElementById("email-container").style.display = "flex";
+                document.getElementById("sign-in-button").style.display = "none";
+                document.getElementById("sign-up-button").style.display = "block";
             }
         </script>
     </head>
@@ -62,7 +72,7 @@
                 <form action="/" method="post" id="login-form">
                     <section id="username-container">
                         <label>Username</label>
-                        <Input type="text" name="username" placeholder="username"></Input>
+                        <Input id="autofocused" type="text" name="username" placeholder="username"></Input>
                     </section>
                     <section id="email-container">
                         <lable>Email</lable>
@@ -74,7 +84,9 @@
                     </section>
 
                   
-                    <button type="submit" value="login">Sign Up</button>
+                    <button id="sign-in-button" type="submit" value="login">Sign In</button>
+                    <button id="sign-up-button" type="submit" value="login">Sign Up</button>
+                    <a id="signup">Haven't got an account yet? <span onclick="signUp()">sign up</span></a>
                 </form>
             </div>
         </div>

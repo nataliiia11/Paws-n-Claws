@@ -71,13 +71,8 @@ database.once("open", () => {
     console.log("Connection to database Paws And Claws succesfull.")
 })
 
-<<<<<<< HEAD
-//use user controller
-const userController = require("./Controller/UserController");
-app.post("/", userController.findAny);
-app.get("/users", userController.findAll);
-=======
+
 // app.post('/',userController.saveUser)
 app.post('/',(req,res)=>
 res.redirect('/personal'))
->>>>>>> f8c9b010633e0876f2cea5a6ac3150bb0c522540
+
