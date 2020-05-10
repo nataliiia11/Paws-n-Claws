@@ -41,6 +41,7 @@ exports.signIn = (req,res, next) => {
     Users.findOne({"username" : req.body.username})
     .then((result) => {
         let checkUser = result;
+        if (result==null) return res.send(false);
         bcrypt.compare(req.body.password, checkUser.password, (err, result) => {
             if (err) throw err;
             return res.send(result);
