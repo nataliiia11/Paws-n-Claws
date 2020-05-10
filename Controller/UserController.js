@@ -40,8 +40,8 @@ exports.signIn = (req,res, next) => {
     res.type("application/json")
     Users.findOne({"username" : req.body.username})
     .then((result) => {
-        let checkUser = result;
-        bcrypt.compare(req.body.password, checkUser.password, (err, result) => {
+        if(result == null) return res.send(false);
+        bcrypt.compare(req.body.password, result.password, (err, result) => {
             if (err) throw err;
             return res.send(result);
         })
