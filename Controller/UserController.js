@@ -1,4 +1,4 @@
-const Users = require("../model/user");
+const Users = require("../model/User");
 const bcrypt = require("bcrypt");
 const fields = ['username', 'email', 'password']
 
