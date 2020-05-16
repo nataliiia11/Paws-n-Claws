@@ -1,10 +1,10 @@
-const Users = require("../model/user");
+const Users = require("../model/User");
 const bcrypt = require("bcrypt");
 const fields = ['username', 'email', 'password']
 
 //initialize database
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost/PawsAndClaws", () => {
+mongoose.connect('mongodb+srv://admin-hanh:hanh@cluster1-yhbkr.mongodb.net/PawsAndClaws', () => {
     Users.init();
 }
 )
@@ -37,6 +37,7 @@ exports.saveUser = (req, res, next) => {
 }
 
 exports.signIn = (req,res, next) => {
+    const userPage=req.params.page;
     res.type("application/json")
     Users.findOne({"username" : req.body.username})
     .then((result) => {
@@ -44,6 +45,19 @@ exports.signIn = (req,res, next) => {
         bcrypt.compare(req.body.password, result.password, (err, result) => {
             if (err) throw err;
             return res.send(result);
+            
+           
         })
     }) 
 }
+exports.getUserParams= (body) => { 
+    return {
+    name: {
+    first: body.first,
+    last: body.last
+    },
+    email: body.email,
+    password: body.password,
+    zipCode: body.zipCode
+    };
+   }

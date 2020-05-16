@@ -1,12 +1,14 @@
-const Posts = require("../model/posts");
+const Posts = require("../model/Posts");
 
 exports.getAllPostsPersonal = (req, res) => { 
-    Posts.find({})
+    const userPage=req.params.page;
+    Posts.find({signInUser:userPage})
     .exec()
     .then((posts) => {
     res.render('personal', {
     newPost:posts,
-page:'personal',
+    page:userPage,
+    userName:userPage
 
     });
     })
@@ -25,7 +27,9 @@ page:'personal',
     .then((posts) => {
     res.render('newsfeed', {
     newPost:posts,
-page:'newsfeed'
+    page:'newsfeed',
+
+    userName:'test'
     });
     })
     .catch((error) => {
@@ -38,13 +42,14 @@ page:'newsfeed'
    };
    
    exports.savePost = (req, res) => { 
+    const userPage=req.params.page;
     let newPost = new Posts( {
     content: req.body.newPost,
-    
+    signInUser: userPage
     });
     newPost.save()
     .then( () => {
-    res.redirect('/personal');
+    res.redirect('/'+userPage);
     })
     .catch(error => {
     res.send(error);
@@ -53,9 +58,10 @@ page:'newsfeed'
 
    exports.deletePost=(req,res)=>{
     const selectedPost=req.body.selected
+    const userPage=req.params.page
     if (selectedPost.match(/^[0-9a-fA-F]{24}$/)) {
         Posts.findByIdAndDelete(selectedPost,(err) => {
             if (err) console.log(err)
-            else { res.redirect('/personal') }})
+            else { res.redirect('/'+userPage) }})
       }
  }

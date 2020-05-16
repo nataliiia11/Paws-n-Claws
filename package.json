@@ -4,6 +4,7 @@
   "description": "To launch the application you need to install Nodejs first. Follow this link to download Nodejs : https://nodejs.org/en/\r After extracting the file open terminal and change the directory to the app folder.\r Type 'npm install' in the terminal install the necessary dependencies\r Type 'node app.js' to run the app",
   "main": "main.js",
   "dependencies": {
+    "@shelf/jest-mongodb": "^1.1.5",
     "bcrypt": "^4.0.1",
     "body-parser": "^1.19.0",
     "ejs": "^3.1.2",
@@ -13,11 +14,19 @@
     "http-status-codes": "^1.4.0",
     "mongoose": "^5.9.11",
     "mongoose-unique-validator": "^2.0.3",
+    "morgan": "^1.10.0",
     "multer": "^1.4.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "eslint": "^7.0.0",
+    "jest": "^26.0.1",
+    "superagent": "^5.2.2",
+    "supertest": "^4.0.2"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node main.js"
   },
   "repository": {
     "type": "git",
@@ -25,6 +34,9 @@
   },
   "author": "",
   "license": "ISC",
+  "engines": {
+    "node": "12.16.1"
+  },
   "bugs": {
     "url": "https://github.com/nataliiia11/Paws-n-Claws/issues"
   },
