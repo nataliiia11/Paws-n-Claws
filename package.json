@@ -25,6 +25,7 @@
     "supertest": "^4.0.2"
   },
   "scripts": {
+    "start": "node main.js",
     "test": "node"
   },
   "repository": {
