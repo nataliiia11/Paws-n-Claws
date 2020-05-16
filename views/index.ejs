@@ -57,7 +57,7 @@
                         if(xhr.response == "false") {
                             window.alert("Wrong username or password");
                         } else{
-                            location.replace("/personal")
+                            location.replace("/"+document.getElementById("username").value)
                         }
                     }
                 }

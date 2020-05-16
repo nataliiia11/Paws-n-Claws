@@ -4,7 +4,7 @@ const fields = ['username', 'email', 'password']
 
 //initialize database
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost/PawsAndClaws", () => {
+mongoose.connect('mongodb+srv://admin-hanh:hanh@cluster1-yhbkr.mongodb.net/PawsAndClaws', () => {
     Users.init();
 }
 )
@@ -37,13 +37,27 @@ exports.saveUser = (req, res, next) => {
 }
 
 exports.signIn = (req,res, next) => {
+    const userPage=req.params.page;
     res.type("application/json")
     Users.findOne({"username" : req.body.username})
     .then((result) => {
-        let checkUser = result;
-        bcrypt.compare(req.body.password, checkUser.password, (err, result) => {
-            if (err) throw err;
-            return res.send(result);
+        if(result == null) return res.send(false);
+            bcrypt.compare(req.body.password, result.password, (err, isExist) => {
+          if (err) throw err;
+          if(isExist){return res.send(result)}
+            
+           
         })
     }) 
 }
+exports.getUserParams= (body) => { 
+    return {
+    name: {
+    first: body.first,
+    last: body.last
+    },
+    email: body.email,
+    password: body.password,
+    zipCode: body.zipCode
+    };
+   }
