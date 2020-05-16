@@ -1,0 +1,151 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders homepage correctly 1`] = `
+"<!DOCTYPE html>
+<html lang=\\"en\\">
+
+    <head>
+        <meta name=\\"viewport\\" content=\\"width=device-width\\">
+        <title>Paws And Claws</title>
+        <link rel=\\"stylesheet\\" type=\\"text/css\\" href=\\"../public/css/home.css\\">
+        <script>
+            window.onload = () => {
+                console.log(\\"windows loaded\\"); 
+                document.getElementById(\\"login-form-container\\").style.display = \\"none\\";
+                document.getElementById(\\"parallax\\").style.display = \\"flex\\";               
+            }
+            
+            var showLoginForm = function () {
+                document.getElementById(\\"login-form-container\\").style.display = \\"flex\\";
+                document.getElementById(\\"username\\").focus();
+                document.getElementById(\\"parallax\\").style.display = \\"none\\";    
+            }
+            
+            var closeLoginForm = function () {
+                document.getElementById(\\"login-form-container\\").style.display = \\"none\\";
+                document.getElementById(\\"parallax\\").style.display = \\"flex\\"; 
+                
+                document.getElementById(\\"sign-in-button\\").style.display = \\"block\\";
+                document.getElementById(\\"sign-up-button\\").style.display = \\"none\\";
+            }
+
+            var signUpButton = function () {
+                document.getElementById(\\"email-container\\").style.display = \\"flex\\";
+                document.getElementById(\\"sign-in-button\\").style.display = \\"none\\";
+                document.getElementById(\\"sign-up-button\\").style.display = \\"block\\";
+            }
+
+            var showAll = function () {
+                var xhr = new XMLHttpRequest();
+                xhr.open('Get', \\"/user\\", true);
+                xhr.send();
+                xhr.onreadystatechange = function() {
+                    if(xhr.readyState == 4 && xhr.status == 200) {
+                        var result = JSON.stringify(xhr.response);
+                        console.log(result);
+                    }
+                }
+            }
+
+            var signIn = function () {
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', \\"/user/signin/\\", true);
+                xhr.setRequestHeader(\\"content-type\\", \\"application/json;charset=UTF-8\\");
+                xhr.send(JSON.stringify({
+                    \\"username\\" : document.getElementById(\\"username\\").value,
+                    \\"password\\" : document.getElementById(\\"password\\").value
+                }))
+                xhr.onreadystatechange = function() {
+                    if(xhr.readyState == 4 && xhr.status == 200) {
+                        if(xhr.response == \\"false\\") {
+                            window.alert(\\"Wrong username or password\\");
+                        } else{
+                            location.replace(\\"/\\"+document.getElementById(\\"username\\").value)
+                        }
+                    }
+                }
+            }
+
+            var signUp = function() {
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', \\"/user/signup/\\", true);
+                xhr.setRequestHeader(\\"Content-Type\\", \\"application/json;charset=UTF-8\\");
+                xhr.send(JSON.stringify({
+                    \\"username\\" : document.getElementById(\\"username\\").value,
+                    \\"email\\" : document.getElementById(\\"email\\").value,
+                    \\"password\\" : document.getElementById(\\"password\\").value
+                }))
+                xhr.onreadystatechange = function () {
+                    if(xhr.readyState == 4 && xhr.status == 200) {
+                        if(xhr.response == \\"false\\") {
+                            window.alert(\\"Please fill all the spaces!\\\\nor\\\\nUsername and Email is already registered!\\")
+                        } else {
+                            document.getElementById(\\"sign-in-button\\").style.display = \\"block\\";
+                            document.getElementById(\\"sign-up-button\\").style.display = \\"none\\";
+                            document.getElementById(\\"email-container\\").style.display = \\"flex\\";
+                        }
+                    }
+                }
+            }
+        </script>
+    </head>
+
+    <body>
+        <section id=\\"header\\">
+             <h1>Paws And Claws</h1>
+        </section>
+        
+        <div id=\\"parallax\\">
+            <section class = \\"highlights\\">
+                <div class=\\"highlights-background\\">
+                </div>
+                <span class=\\"highlights-content\\">This is a project by Students of HTW in WTAT1</span>
+                
+            </section>
+            <section class = \\"highlights\\">
+                <div class=\\"highlights-background\\">
+                </div>
+                <span class=\\"highlights-content\\">Members: <br>
+                    <ul>
+                        <li>Diro</li>
+                        <li>Hanh</li>
+                        <li>Nhinhi</li>
+                        <li>Nata</li>
+                    </ul>
+                </span>
+            </section>
+            <section class=\\"highlights\\">
+                <div class=\\"highlights-background\\">
+                    <span class=\\"highlights-content\\">Paws and Claws is a webapp where Users can share their pet's cute and absurd acts</span>
+                </div>
+            </section>
+        </div>
+        
+        <div id=\\"login-container\\">
+            <section id=\\"login-direction\\" onclick=\\"showLoginForm()\\">Login to start Using</section>
+            <div id=\\"login-form-container\\">
+                <span id=\\"close-login-form-container-button\\" onclick=\\"closeLoginForm()\\">&#10006;</span>
+                <form action=\\"/\\" method=\\"post\\" id=\\"login-form\\">
+                    <section id=\\"username-container\\">
+                        <label>Username</label>
+                        <Input id=\\"username\\" type=\\"text\\" name=\\"username\\" placeholder=\\"username\\"></Input>
+                    </section>
+                    <section id=\\"email-container\\">
+                        <lable>Email</lable>
+                        <Input id=\\"email\\" type=\\"text\\" name=\\"email\\" placeholder=\\"email\\"></Input>
+                    </section>
+                    <section id=\\"password-container\\">
+                        <lable>Password</lable>
+                        <Input id=\\"password\\" type=\\"password\\" name=\\"pass\\" placeholder=\\"password\\"></Input>
+                    </section>
+
+                  
+                    <input type=\\"button\\" id=\\"sign-in-button\\" value=\\"Sign In\\" onclick=\\"signIn()\\"></input>
+                    <input type=\\"button\\" id=\\"sign-up-button\\" value=\\"Sign Up\\" onclick=\\"signUp()\\"></input>
+                    <a id=\\"signup\\">Haven't got an account yet? <span onclick=\\"signUpButton()\\">sign up</span></a>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>"
+`;
