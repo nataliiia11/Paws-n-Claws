@@ -1,5 +1,4 @@
 
-const port = 3000;
 
 const express=require('express');
 const path = require('path');
@@ -49,8 +48,7 @@ app.post('/upload', upload.single('photo'), (req, res) => {
 
    
       
-app.listen(process.env.PORT||3000,()=>
-	console.log(`Listening on Port ${port}`));
+
 
 
 //mongoose implementation
@@ -61,3 +59,11 @@ database.on('error', console.error.bind(console, 'Connection error'));
 database.once('open', () => {
 	console.log('Connection to database Paws And Claws succesfull.');
 });
+
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 3000;
+}
+
+app.listen(port,()=>
+	console.log(`Listening on Port ${port}`));
