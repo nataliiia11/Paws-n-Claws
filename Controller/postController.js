@@ -1,4 +1,4 @@
-const Posts = require("../model/posts");
+const Posts = require("../model/Posts");
 
 exports.getAllPostsPersonal = (req, res) => { 
     const userPage=req.params.page;

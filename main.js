@@ -11,7 +11,9 @@ const userRouter = require('./Router/userRouter');
 const postController = require('./Controller/postController');
 const errorController = require('./Controller/errorController');
 const userController = require('./Controller/UserController');
-
+const mongoose = require('mongoose');
+mongoose.connect('mongodb+srv://admin-hanh:hanh@cluster1-yhbkr.mongodb.net/PawsAndClaws', {useNewUrlParser: true, useUnifiedTopology: true});
+var database = mongoose.connection;
 app.use('/public', express.static(path.join(__dirname,'public')));
 app.use(morgan(':method:url:status*:response-time ms'))
 app.use('/user', userRouter);
@@ -52,9 +54,7 @@ app.post('/upload', upload.single('photo'), (req, res) => {
 
 
 //mongoose implementation
-const mongoose = require('mongoose');
-mongoose.connect('mongodb+srv://admin-hanh:hanh@cluster1-yhbkr.mongodb.net/PawsAndClaws', {useNewUrlParser: true, useUnifiedTopology: true});
-var database = mongoose.connection;
+
 database.on('error', console.error.bind(console, 'Connection error'));
 database.once('open', () => {
 	console.log('Connection to database Paws And Claws succesfull.');
