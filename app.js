@@ -19,10 +19,8 @@ app.use('/user', userRouter);
 app.set('view engine','ejs');
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static('public'));
-let port = process.env.PORT;
-if (port == null || port == "") {
-  port = 3000;
-}
+require('dotenv').config();
+const port = process.env.PORT || ((process.env.NODE_ENV === 'test') ? 3001 : 3000)
 app.set('port', port)
 
 //const posts=[];

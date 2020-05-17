@@ -4,12 +4,13 @@
 
 const app = require('./app')
 const mongoose = require('mongoose');  
-      
+require('dotenv').config();      
 
+const mongodbURI = process.env.MONGODB_URI || ((process.env.NODE_ENV === 'test') ? 'mongodb://localhost:27017/PawsnClaws' : 'mongodb+srv://admin-hanh:hanh@cluster1-yhbkr.mongodb.net/PawsAndClaws')
 
 
 //mongoose implementation
-mongoose.connect('mongodb+srv://admin-hanh:hanh@cluster1-yhbkr.mongodb.net/PawsAndClaws', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(mongodbURI, {useNewUrlParser: true, useUnifiedTopology: true});
 var database = mongoose.connection;
 database.on('error', console.error.bind(console, 'Connection error'));
 database.once('open', () => {
