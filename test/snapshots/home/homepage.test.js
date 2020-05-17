@@ -7,4 +7,4 @@ it('renders homepage correctly', (done) => {
       expect(response.text).toMatchSnapshot()
       done()
     })
-})
+  })

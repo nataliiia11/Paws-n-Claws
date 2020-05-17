@@ -1,5 +1,5 @@
 const Posts = require("../model/Posts");
-
+const fields = ['content', 'signInName',]
 exports.getAllPostsPersonal = (req, res) => { 
     const userPage=req.params.page;
     Posts.find({signInUser:userPage})
@@ -65,3 +65,13 @@ exports.getAllPostsPersonal = (req, res) => {
             else { res.redirect('/'+userPage) }})
       }
  }
+
+ exports.getPostsParams=(body)=> {
+    const o = {}
+    fields.forEach(f => {
+      if (body[f]) {
+        o[f] = body[f]
+      }
+    })
+    return o
+  }
