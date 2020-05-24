@@ -13,7 +13,7 @@ const Posts = require('../model/Posts')
 
 const mongoose = require('mongoose')
 require('dotenv').config();
-beforeAll(() => {
+before(() => {
   process.env.NODE_ENV = 'test'
   mongoose.set('bufferCommands', false)
   mongoose.connect(mongodbURI,{ useNewUrlParser: true, useUnifiedTopology: true })
@@ -25,7 +25,7 @@ beforeAll(() => {
   })
 })
 
-afterAll(async () => {
+after(async () => {
   await mongoose.connection.close();
   console.log('+++++ afterAll DB Close')
 

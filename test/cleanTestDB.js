@@ -6,8 +6,8 @@ mongoose.connect(mongodbURI,
   .then(console.log('connected to mongoose: ' + mongodbURI))
   .catch(error => console.log('error creating connection to: ' + mongodbURI + error))
 
-const User = require('../models/User')
-const Posts = require('../models/Posts')
+const User = require('../model/User')
+const Posts = require('../model/Posts')
 
 async function cleanDB () {
   await User.deleteMany({})
