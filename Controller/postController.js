@@ -28,8 +28,7 @@ exports.getAllPostsPersonal = (req, res) => {
     res.render('newsfeed', {
     newPost:posts,
     page:'newsfeed',
-
-    userName:'test'
+        userName:'test'
     });
     })
     .catch((error) => {
@@ -52,7 +51,7 @@ exports.getAllPostsPersonal = (req, res) => {
     res.redirect('/'+userPage);
     })
     .catch(error => {
-    res.send(error);
+    res.sendStatus(error);
     });
    };
 

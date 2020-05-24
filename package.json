@@ -4,15 +4,19 @@
   "description": "To launch the application you need to install Nodejs first. Follow this link to download Nodejs : https://nodejs.org/en/\r After extracting the file open terminal and change the directory to the app folder.\r Type 'npm install' in the terminal install the necessary dependencies\r Type 'node app.js' to run the app",
   "main": "main.js",
   "dependencies": {
+    "assert": "^2.0.0",
     "bcrypt": "^4.0.1",
     "body-parser": "^1.19.0",
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
     "dotenv": "^8.2.0",
     "ejs": "^3.1.2",
     "express": "^4.17.1",
     "express-router": "0.0.1",
     "http-status-code": "^2.1.0",
     "http-status-codes": "^1.4.0",
-    "mongoose": "^5.9.11",
+    "mocha": "^7.2.0",
+    "mongoose": "^5.9.15",
     "mongoose-unique-validator": "^2.0.3",
     "morgan": "^1.10.0",
     "multer": "^1.4.2"
@@ -23,6 +27,7 @@
     "babel-preset-env": "^1.7.0",
     "eslint": "^7.0.0",
     "jest": "^26.0.1",
+    "mongodb-memory-server": "^6.6.1",
     "superagent": "^5.2.2",
     "supertest": "^4.0.2"
   },
@@ -30,7 +35,7 @@
     "start": "node main.js",
     "run dev": "nodemon main.js",
     "test:watch": "jest --watch",
-    "test": "jest --detectOpenHandles --forceExit"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
