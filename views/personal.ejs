@@ -21,6 +21,30 @@
     $(".upload-button").on('click', function () {
       $(".file-upload").click();
     });
+
+    var updateProfile = function() {
+      var xhr = new XMLHttpRequest();
+      var path = "/" + sessionStorage.getItem("username");
+      xhr.open('PUT', path, true);
+      xhr.setRequestHeader("content-type", "application/json;charset=UTF-8");
+      xhr.send(
+        JSON.stringify(
+          {
+          "newUsername" : document.getElementById("username").value,
+          "username" : sessionStorage.getItem("username"),
+          "email" : document.getElementById("email").value,
+          "newPassword" : document.getElementById("new-password").value,
+          "password" : document.getElementById("password").value
+          }
+        )
+      );
+      xhr.onreadystatechange = function() {
+        if(xhr.status == 200 && xhr.readyState == 4) {
+          if(xhr.response == "true")  document.getElementById("result").innerHTML = "Profile saved";
+          else document.getElementById("result").innerHTML = "Wrong password/Invalid input";
+        }
+      }
+    }
   });
 
   var editProfile = function () {
@@ -205,6 +229,7 @@
         </section>
         
         <input type="button" id="update-button" value="Update" onclick=""></input>
+        <span id = "result"></span>
       </form>
     </div>
   </div>
