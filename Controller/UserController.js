@@ -50,6 +50,18 @@ exports.signIn = (req,res, next) => {
         })
     }) 
 }
+exports.delete=(req, res, next) => {
+    const userId = req.params.id
+    User.findByIdAndRemove(userId)
+      .then(() => {
+        res.locals.redirect = '/'
+        next()
+      })
+      .catch(error => {
+        console.log(`Error deleting user by ID: ${error.message}`)
+        next()
+      })
+  }
 exports.getUserParams= (body) => { 
     return {
     name: {
@@ -61,3 +73,66 @@ exports.getUserParams= (body) => {
     zipCode: body.zipCode
     };
    }
+
+   exports.updateUserData = (req, res) => {
+    var newUsername = req.body.newUsername;
+    var username = req.body.username;
+    var email = req.body.email;
+    var newPassword = bcrypt.hashSync(req.body.newPassword, 10);
+    var oldPassword = req.body.password;
+
+    if(newUsername.length == 0) newUsername = username;
+    if(newPassword.length == 0) newPassword = password;
+    if(newUsername.length == 0 && newPassword.length == 0 && email.length == 0) return res.send(false);
+
+    Users.findOne({"username" : username})
+    .then((result) => {
+        if(result == null) return res.send(false);
+        bcrypt.compare(oldPassword, result.password, (err, result) => {
+            if (err) throw err;
+            if(result) {
+                if(email.length != 0) {
+                    Users.findOneAndUpdate(
+                        {"username" : username},
+                        {$set:
+                            {
+                                "username" : newUsername,
+                                "email" : email,
+                                "password" : newPassword
+                            }
+                        }
+                        
+                
+                    ).then((result, error) => {
+                        if (error) {
+                            console.log(error);
+                            throw error;
+                        }
+                        else return res.send(result);
+                    })
+                } else {
+                    Users.updateOne(
+                        {"username" : username},
+                        {
+                            "username" : newUsername,
+                            "password" : newPassword
+                        }
+                        
+                        
+                
+                    ).then((result, error) => {
+                        if (error) {
+                            console.log(error);
+                            throw error;
+                        }
+                        else return res.send(result);
+                    })
+                }
+            } else {
+                res.send(result);
+            }
+        })
+    }) 
+
+    
+}

@@ -25,13 +25,11 @@
                 document.getElementById("sign-in-button").style.display = "block";
                 document.getElementById("sign-up-button").style.display = "none";
             }
-
             var signUpButton = function () {
                 document.getElementById("email-container").style.display = "flex";
                 document.getElementById("sign-in-button").style.display = "none";
                 document.getElementById("sign-up-button").style.display = "block";
             }
-
             var showAll = function () {
                 var xhr = new XMLHttpRequest();
                 xhr.open('Get', "/user", true);
@@ -43,7 +41,6 @@
                     }
                 }
             }
-
             var signIn = function () {
                 var xhr = new XMLHttpRequest();
                 xhr.open('POST', "/user/signin/", true);
@@ -57,12 +54,12 @@
                         if(xhr.response == "false") {
                             window.alert("Wrong username or password");
                         } else{
-                            location.replace("/"+document.getElementById("username").value)
+                            sessionStorage.setItem("username", "/"+document.getElementById("username").value);
+                            location.replace(sessionStorage.getItem("username"));
                         }
                     }
                 }
             }
-
             var signUp = function() {
                 var xhr = new XMLHttpRequest();
                 xhr.open('POST', "/user/signup/", true);
@@ -79,7 +76,7 @@
                         } else {
                             document.getElementById("sign-in-button").style.display = "block";
                             document.getElementById("sign-up-button").style.display = "none";
-                            document.getElementById("email-container").style.display = "flex";
+                            document.getElementById("email-container").style.display = "none";
                         }
                     }
                 }
@@ -124,8 +121,8 @@
                 <span id="close-login-form-container-button" onclick="closeLoginForm()">&#10006;</span>
                 <form action="/" method="post" id="login-form">
                     <section id="username-container">
-                        <label>Username</label>
-                        <Input id="username" type="text" name="username" placeholder="username"></Input>
+                        <label>New Username</label>
+                        <Input id="username" type="text" name="username" placeholder="new username"></Input>
                     </section>
                     <section id="email-container">
                         <lable>Email</lable>

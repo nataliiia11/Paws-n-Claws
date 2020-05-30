@@ -8,5 +8,5 @@ userController = require("../Controller/UserController")
 router.get('/', userController.findAllUser)
 router.post('/signup/', userController.saveUser)
 router.post('/signin/', userController.signIn)
-
+router.put('/update', userController.updateUserData);
 module.exports = router;
