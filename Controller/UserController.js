@@ -78,21 +78,17 @@ exports.updateUserData = (req, res) => {
             if (err) throw err;
             if(result) {
                 if(email.length != 0) {
-                    Users.findOneAndUpdate(
+                    Users.updateOne(
                         {"username" : username},
-                        {$set:
-                            {
-                                "username" : newUsername,
-                                "email" : email,
-                                "password" : newPassword
-                            }
-                        }
-                        
-                
-                    ).then((result, error) => {
+                        {
+                            "username" : newUsername,
+                            "email" : email,
+                            "password" : newPassword
+                        }).then((result, error) => {
                         if (error) {
+                            console.log("It is error")
                             console.log(error);
-                            throw error;
+                            //throw error;
                         }
                         else return res.send(result);
                     })
@@ -102,16 +98,17 @@ exports.updateUserData = (req, res) => {
                         {
                             "username" : newUsername,
                             "password" : newPassword
-                        }
-                        
-                        
-                
-                    ).then((result, error) => {
+                        })
+                        .then((result, error) => {
                         if (error) {
+                            console.log("it is error");
                             console.log(error);
-                            throw error;
+                            //throw error;
                         }
-                        else return res.send(result);
+                        else {
+                            console.log("it is error 109");
+                            return res.send(result);
+                        }
                     })
                 }
             } else {

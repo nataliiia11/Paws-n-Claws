@@ -44,5 +44,8 @@
   "bugs": {
     "url": "https://github.com/nataliiia11/Paws-n-Claws/issues"
   },
-  "homepage": "https://github.com/nataliiia11/Paws-n-Claws#readme"
+  "homepage": "https://github.com/nataliiia11/Paws-n-Claws#readme",
+  "directories": {
+    "test": "test"
+  }
 }
