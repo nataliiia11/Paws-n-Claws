@@ -34,13 +34,17 @@
           "username" : sessionStorage.getItem("username"),
           "email" : document.getElementById("email").value,
           "newPassword" : document.getElementById("new-password").value,
-          "password" : document.getElementById("password").value
+          "password" : document.getElementById("password").value,
+          "token" : sessionStorage.getItem("token")
           }
         )
       );
       xhr.onreadystatechange = function() {
         if(xhr.status == 200 && xhr.readyState == 4) {
-          if(xhr.response == "true")  document.getElementById("result").innerHTML = "Profile saved";
+          if(xhr.response == "true")  {
+            window.alert("Profile updated");
+            location.reload();
+          }
           else document.getElementById("result").innerHTML = "Wrong password/Invalid input";
         }
       }
