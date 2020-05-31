@@ -40,13 +40,12 @@ app.post('/:page/delete',postController.deletePost);
 
 
 app.post('/:page',postController.savePost);
-
-
 app.post('/upload', upload.single('photo'), (req, res) => {
 	if(req.file) {
 		res.json(req.file);
 	}
 	else throw 'error';
 });
+app.post('/users/:id', userController.delete)
 
 module.exports = app

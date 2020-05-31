@@ -32,12 +32,13 @@ afterAll(async () => {
   
 })
 
-
+const { id } = require('./helper/testHelper')
 module.exports = {
   Posts: Posts,
   User: UserTest,
   app: app,
   request: request,
   supertest: request,
-  db: mongoose.connection
+  db: mongoose.connection,
+  id:id
 }

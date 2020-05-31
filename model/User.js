@@ -20,10 +20,21 @@ var userSchema = mongoose.Schema({
     password : {
         type : String, 
         required : true
-    }
+    },
+    
+    posts: [{type: mongoose.Schema.Types.ObjectId, ref: "Posts"}], 
+
+       
 });
 
-
+userSchema.methods.getInfo = function() { 
+    return `Username: ${this.username} Email: ${this.email} `
+   };
+userSchema.methods.findLocalUser = function() { 
+    return this.model("User")
+    .find({username: this.username})
+    .exec(); 
+   };
    
 
 userSchema.plugin(uniqueValidator);

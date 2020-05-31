@@ -48,6 +48,36 @@ exports.signIn = (req,res) => {
         })
     }) 
 }
+exports.create= (req, res, next) => {
+    if (req.skip) next()
+    const userParams = getUserParams(req.body)
+    const newUser = new User(userParams)
+    User.register(newUser, req.body.password, (e, user) => {
+      if (user) {
+        req.flash('success', `${user.username}'s account created succesfully!`)
+        res.locals.redirect = '/users'
+        next()
+      } else {
+        req.flash('danger', `failed to create user account because: ${e.message}`)
+        res.locals.user = newUser
+        // res.locals.redirect = '/users/new'
+        // next()
+        res.render('users/new')
+      }
+    })
+  }
+exports.delete=(req, res, next) => {
+    const userId = req.params.id
+    User.findByIdAndRemove(userId)
+      .then(() => {
+        res.locals.redirect = '/'
+        next()
+      })
+      .catch(error => {
+        console.log(`Error deleting user by ID: ${error.message}`)
+        next()
+      })
+  }
 exports.getUserParams= (body) => { 
     return {
     name: {
@@ -59,6 +89,8 @@ exports.getUserParams= (body) => {
     zipCode: body.zipCode
     };
 };
+
+
 
 exports.updateUserData = (req, res) => {
     var newUsername = req.body.newUsername;

@@ -25,13 +25,11 @@
                 document.getElementById("sign-in-button").style.display = "block";
                 document.getElementById("sign-up-button").style.display = "none";
             }
-
             var signUpButton = function () {
                 document.getElementById("email-container").style.display = "flex";
                 document.getElementById("sign-in-button").style.display = "none";
                 document.getElementById("sign-up-button").style.display = "block";
             }
-
             var showAll = function () {
                 var xhr = new XMLHttpRequest();
                 xhr.open('Get', "/user", true);
@@ -43,7 +41,6 @@
                     }
                 }
             }
-
             var signIn = function () {
                 var xhr = new XMLHttpRequest();
                 xhr.open('POST', "/user/signin/", true);
@@ -63,7 +60,6 @@
                     }
                 }
             }
-
             var signUp = function() {
                 var xhr = new XMLHttpRequest();
                 xhr.open('POST', "/user/signup/", true);
