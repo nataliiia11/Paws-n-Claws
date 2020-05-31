@@ -51,11 +51,16 @@
                 }))
                 xhr.onreadystatechange = function() {
                     if(xhr.readyState == 4 && xhr.status == 200) {
-                        if(xhr.response == "false") {
+                        response = JSON.parse(xhr.response);
+                        console.log(response.result)
+                        console.log(response.token)
+                        if(response.result == "false") {
                             window.alert("Wrong username or password");
                         } else{
-                            sessionStorage.setItem("username", "/"+document.getElementById("username").value);
-                            location.replace(sessionStorage.getItem("username"));
+                            sessionStorage.setItem("username", document.getElementById("username").value);
+                            sessionStorage.setItem("token", response.token)
+                            console.log(sessionStorage.getItem("username") + "  " + sessionStorage.getItem("token"))
+                            location.replace("/" + sessionStorage.getItem("username"));
                         }
                     }
                 }
@@ -121,8 +126,8 @@
                 <span id="close-login-form-container-button" onclick="closeLoginForm()">&#10006;</span>
                 <form action="/" method="post" id="login-form">
                     <section id="username-container">
-                        <label>New Username</label>
-                        <Input id="username" type="text" name="username" placeholder="new username"></Input>
+                        <label>Username</label>
+                        <Input id="username" type="text" name="username" placeholder="username"></Input>
                     </section>
                     <section id="email-container">
                         <lable>Email</lable>

@@ -25,7 +25,7 @@
     var updateProfile = function() {
       var xhr = new XMLHttpRequest();
       var path = "/" + sessionStorage.getItem("username");
-      xhr.open('PUT', path, true);
+      xhr.open('PUT', "/user/update", true);
       xhr.setRequestHeader("content-type", "application/json;charset=UTF-8");
       xhr.send(
         JSON.stringify(
@@ -34,13 +34,17 @@
           "username" : sessionStorage.getItem("username"),
           "email" : document.getElementById("email").value,
           "newPassword" : document.getElementById("new-password").value,
-          "password" : document.getElementById("password").value
+          "password" : document.getElementById("password").value,
+          "token" : sessionStorage.getItem("token")
           }
         )
       );
       xhr.onreadystatechange = function() {
         if(xhr.status == 200 && xhr.readyState == 4) {
-          if(xhr.response == "true")  document.getElementById("result").innerHTML = "Profile saved";
+          if(xhr.response == "true")  {
+            window.alert("Profile updated");
+            location.reload();
+          }
           else document.getElementById("result").innerHTML = "Wrong password/Invalid input";
         }
       }
@@ -212,8 +216,8 @@
       <span id="close-update-form-container-button" onclick="closeUpdateForm()">&#10006;</span>
       <form action="/" method="post" id="update-form">
         <section id="username-container">
-            <label>Username</label>
-            <Input id="username" type="text" name="username" placeholder="username"></Input>
+            <label>New Username</label>
+            <Input id="username" type="text" name="username" placeholder="new username"></Input>
         </section>
         <section id="email-container">
             <lable>Email</lable>
