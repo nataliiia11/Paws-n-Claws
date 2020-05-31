@@ -40,8 +40,6 @@ app.post('/:page/delete',postController.deletePost);
 
 
 app.post('/:page',postController.savePost);
-
-
 app.post('/upload', upload.single('photo'), (req, res) => {
 	if(req.file) {
 		res.json(req.file);

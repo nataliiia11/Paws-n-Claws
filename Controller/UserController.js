@@ -9,7 +9,7 @@ mongoose.connect('mongodb+srv://admin-hanh:hanh@cluster1-yhbkr.mongodb.net/PawsA
 }
 )
 
-exports.findAllUser = (req, res, next) => {
+exports.findAllUser = (req, res) => {
     Users.find()
         .exec()
         .then((users) => {
@@ -17,7 +17,7 @@ exports.findAllUser = (req, res, next) => {
         })
 }
 
-exports.saveUser = (req, res, next) => {
+exports.saveUser = (req, res) => {
     var password = "";
     if(req.body.password != "") password = bcrypt.hashSync(req.body.password, 10);
     console.log(req.body.password);
@@ -36,7 +36,7 @@ exports.saveUser = (req, res, next) => {
     })
 }
 
-exports.signIn = (req,res, next) => {
+exports.signIn = (req,res) => {
     const userPage=req.params.page;
     res.type("application/json")
     Users.findOne({"username" : req.body.username})
@@ -45,11 +45,27 @@ exports.signIn = (req,res, next) => {
         bcrypt.compare(req.body.password, result.password, (err, result) => {
             if (err) throw err;
             return res.send(result);
-            
-           
         })
     }) 
 }
+exports.create= (req, res, next) => {
+    if (req.skip) next()
+    const userParams = getUserParams(req.body)
+    const newUser = new User(userParams)
+    User.register(newUser, req.body.password, (e, user) => {
+      if (user) {
+        req.flash('success', `${user.username}'s account created succesfully!`)
+        res.locals.redirect = '/users'
+        next()
+      } else {
+        req.flash('danger', `failed to create user account because: ${e.message}`)
+        res.locals.user = newUser
+        // res.locals.redirect = '/users/new'
+        // next()
+        res.render('users/new')
+      }
+    })
+  }
 exports.delete=(req, res, next) => {
     const userId = req.params.id
     User.findByIdAndRemove(userId)
@@ -72,9 +88,11 @@ exports.getUserParams= (body) => {
     password: body.password,
     zipCode: body.zipCode
     };
-   }
+};
 
-   exports.updateUserData = (req, res) => {
+
+
+exports.updateUserData = (req, res) => {
     var newUsername = req.body.newUsername;
     var username = req.body.username;
     var email = req.body.email;
