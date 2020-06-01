@@ -1,3 +1,4 @@
+"use strict";
 const Users = require("../model/User");
 const bcrypt = require("bcrypt");
 const fields = ['username', 'email', 'password']
@@ -41,43 +42,21 @@ exports.signIn = (req,res) => {
     res.type("application/json")
     Users.findOne({"username" : req.body.username})
     .then((result) => {
-        if(result == null) return res.send(false);
-        bcrypt.compare(req.body.password, result.password, (err, result) => {
+        if(result == null) return res.send(JSON.stringify({"result" : false}));
+        const dbPassword = result.password;
+        bcrypt.compare(req.body.password, dbPassword, (err, result) => {
             if (err) throw err;
+            result = JSON.stringify(
+                {
+                    "result" : true,
+                    "token" : dbPassword
+                }
+            );
+            console.log(result);
             return res.send(result);
         })
     }) 
 }
-exports.create= (req, res, next) => {
-    if (req.skip) next()
-    const userParams = getUserParams(req.body)
-    const newUser = new User(userParams)
-    User.register(newUser, req.body.password, (e, user) => {
-      if (user) {
-        req.flash('success', `${user.username}'s account created succesfully!`)
-        res.locals.redirect = '/users'
-        next()
-      } else {
-        req.flash('danger', `failed to create user account because: ${e.message}`)
-        res.locals.user = newUser
-        // res.locals.redirect = '/users/new'
-        // next()
-        res.render('users/new')
-      }
-    })
-  }
-exports.delete=(req, res, next) => {
-    const userId = req.params.id
-    User.findByIdAndRemove(userId)
-      .then(() => {
-        res.locals.redirect = '/'
-        next()
-      })
-      .catch(error => {
-        console.log(`Error deleting user by ID: ${error.message}`)
-        next()
-      })
-  }
 exports.getUserParams= (body) => { 
     return {
     name: {
@@ -90,67 +69,48 @@ exports.getUserParams= (body) => {
     };
 };
 
-
-
 exports.updateUserData = (req, res) => {
     var newUsername = req.body.newUsername;
     var username = req.body.username;
     var email = req.body.email;
     var newPassword = bcrypt.hashSync(req.body.newPassword, 10);
     var oldPassword = req.body.password;
+    var token = req.body.token;
 
     if(newUsername.length == 0) newUsername = username;
     if(newPassword.length == 0) newPassword = password;
     if(newUsername.length == 0 && newPassword.length == 0 && email.length == 0) return res.send(false);
-
-    Users.findOne({"username" : username})
-    .then((result) => {
-        if(result == null) return res.send(false);
-        bcrypt.compare(oldPassword, result.password, (err, result) => {
-            if (err) throw err;
-            if(result) {
-                if(email.length != 0) {
-                    Users.findOneAndUpdate(
-                        {"username" : username},
-                        {$set:
-                            {
-                                "username" : newUsername,
-                                "email" : email,
-                                "password" : newPassword
-                            }
-                        }
-                        
-                
-                    ).then((result, error) => {
-                        if (error) {
-                            console.log(error);
-                            throw error;
-                        }
-                        else return res.send(result);
-                    })
-                } else {
-                    Users.updateOne(
-                        {"username" : username},
-                        {
-                            "username" : newUsername,
-                            "password" : newPassword
-                        }
-                        
-                        
-                
-                    ).then((result, error) => {
-                        if (error) {
-                            console.log(error);
-                            throw error;
-                        }
-                        else return res.send(result);
-                    })
-                }
-            } else {
-                res.send(result);
+    let user;
+    if(email.length != 0) {
+        user = { 
+            "username" : newUsername,
+            "email" : email,
+            "password" : newPassword
+        };
+    }
+    else  {
+        user = {
+            "username" : newUsername,
+            "password" : newPassword
+        };
+    }
+    
+    console.log(JSON.stringify(user));
+    bcrypt.compare(token, oldPassword, (result, err) => {
+        if (err) throw err;
+        Users.updateOne(
+            {"username" : username},
+            user
+        ).then((result, error) => {
+            if (error) {
+                console.log(error);
+                return res.send(false);
             }
+            if(result.n == 0)
+                return res.send(false);
+            return res.send(true);
         })
-    }) 
-
+        
+    })
     
 }
