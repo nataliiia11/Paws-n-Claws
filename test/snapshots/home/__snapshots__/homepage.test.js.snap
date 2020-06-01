@@ -28,13 +28,11 @@ exports[`renders homepage correctly 1`] = `
                 document.getElementById(\\"sign-in-button\\").style.display = \\"block\\";
                 document.getElementById(\\"sign-up-button\\").style.display = \\"none\\";
             }
-
             var signUpButton = function () {
                 document.getElementById(\\"email-container\\").style.display = \\"flex\\";
                 document.getElementById(\\"sign-in-button\\").style.display = \\"none\\";
                 document.getElementById(\\"sign-up-button\\").style.display = \\"block\\";
             }
-
             var showAll = function () {
                 var xhr = new XMLHttpRequest();
                 xhr.open('Get', \\"/user\\", true);
@@ -46,7 +44,6 @@ exports[`renders homepage correctly 1`] = `
                     }
                 }
             }
-
             var signIn = function () {
                 var xhr = new XMLHttpRequest();
                 xhr.open('POST', \\"/user/signin/\\", true);
@@ -57,15 +54,20 @@ exports[`renders homepage correctly 1`] = `
                 }))
                 xhr.onreadystatechange = function() {
                     if(xhr.readyState == 4 && xhr.status == 200) {
-                        if(xhr.response == \\"false\\") {
+                        response = JSON.parse(xhr.response);
+                        console.log(response.result)
+                        console.log(response.token)
+                        if(response.result == \\"false\\") {
                             window.alert(\\"Wrong username or password\\");
                         } else{
-                            location.replace(\\"/\\"+document.getElementById(\\"username\\").value)
+                            sessionStorage.setItem(\\"username\\", document.getElementById(\\"username\\").value);
+                            sessionStorage.setItem(\\"token\\", response.token)
+                            console.log(sessionStorage.getItem(\\"username\\") + \\"  \\" + sessionStorage.getItem(\\"token\\"))
+                            location.replace(\\"/\\" + sessionStorage.getItem(\\"username\\"));
                         }
                     }
                 }
             }
-
             var signUp = function() {
                 var xhr = new XMLHttpRequest();
                 xhr.open('POST', \\"/user/signup/\\", true);
@@ -82,7 +84,7 @@ exports[`renders homepage correctly 1`] = `
                         } else {
                             document.getElementById(\\"sign-in-button\\").style.display = \\"block\\";
                             document.getElementById(\\"sign-up-button\\").style.display = \\"none\\";
-                            document.getElementById(\\"email-container\\").style.display = \\"flex\\";
+                            document.getElementById(\\"email-container\\").style.display = \\"none\\";
                         }
                     }
                 }

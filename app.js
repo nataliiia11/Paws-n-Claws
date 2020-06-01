@@ -46,6 +46,6 @@ app.post('/upload', upload.single('photo'), (req, res) => {
 	}
 	else throw 'error';
 });
-app.post('/users/:id', userController.delete)
+//app.post('/users/:id', userController.delete)
 
 module.exports = app
