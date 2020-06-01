@@ -1,0 +1,102 @@
+#update-container{
+    z-index: 3;
+}
+
+#close-update-form-container-button {
+    position: absolute;
+    right: 10vw;
+    top: 10vh;
+    color: rgba(202, 189, 169,1);
+    font-weight: bolder;
+    font-size: 36px;
+    cursor: pointer;
+}
+
+#login-form-container{
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    z-index: 2;
+    position: fixed;
+    background: rgba(152, 139, 119,1);
+}
+
+#login-form {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    display: flex;
+    flex-direction: column;
+}
+
+#username-container, #password-container,#email-container{
+    min-width: 200px;
+    width: 25vw;
+    background: rgba(152, 139, 119,1);
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    padding-bottom: 10px;    
+    color: rgba(202, 189, 169,1);
+}
+
+#email-container{
+    display: none;
+}
+
+#username-container > input, #password-container > input, #email-container>input {
+    background: rgba(152, 139, 119,1);
+    border: none;
+    color: rgba(202, 189, 169,1);
+    border-bottom: 1px solid;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    outline: none;
+}
+
+#username-container > input::placeholder, #password-container > input::placeholder, #email-container > input::placeholder {
+    color: rgba(172, 159, 139,1);
+    font-weight: bolder;
+    font-size: 16px;
+}
+
+
+#sign-in-button, #sign-up-button {
+    min-width: 200px;
+    width: 25vw;
+    background: rgba(172, 159, 139,0.5);
+    border: none;
+    height: 50px;
+    border-radius: 25px;
+    color: rgba(202, 189, 169,1);
+    text-align: center;
+}
+
+#sign-up-button {
+    display: none;
+}
+
+#username-container > input:focus, #username-container > input:focus::placeholder, #password-container > input:focus, #password-container > input:focus::placeholder,#email-container > input:focus, #email-container > input:focus::placeholder {
+    color: rgba(222, 209, 189,1);
+}
+
+#username-container > input:focus, #password-container > input:focus {
+    border-bottom: 2px solid;
+}
+
+#signup {
+    padding-top: 10px;
+    text-align: center;
+    color: rgba(202, 189, 169,1);
+}
+
+#signup > span {
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+}
+
+#signup > span:hover {
+    cursor: pointer;
+}
