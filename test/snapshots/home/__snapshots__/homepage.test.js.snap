@@ -28,11 +28,13 @@ exports[`renders homepage correctly 1`] = `
                 document.getElementById(\\"sign-in-button\\").style.display = \\"block\\";
                 document.getElementById(\\"sign-up-button\\").style.display = \\"none\\";
             }
+
             var signUpButton = function () {
                 document.getElementById(\\"email-container\\").style.display = \\"flex\\";
                 document.getElementById(\\"sign-in-button\\").style.display = \\"none\\";
                 document.getElementById(\\"sign-up-button\\").style.display = \\"block\\";
             }
+
             var showAll = function () {
                 var xhr = new XMLHttpRequest();
                 xhr.open('Get', \\"/user\\", true);
@@ -44,6 +46,7 @@ exports[`renders homepage correctly 1`] = `
                     }
                 }
             }
+
             var signIn = function () {
                 var xhr = new XMLHttpRequest();
                 xhr.open('POST', \\"/user/signin/\\", true);
@@ -57,12 +60,18 @@ exports[`renders homepage correctly 1`] = `
                         if(xhr.response == \\"false\\") {
                             window.alert(\\"Wrong username or password\\");
                         } else{
-                            sessionStorage.setItem(\\"username\\", \\"/\\"+document.getElementById(\\"username\\").value);
-                            location.replace(sessionStorage.getItem(\\"username\\"));
+<<<<<<< Updated upstream
+                            location.replace(\\"/\\"+document.getElementById(\\"username\\").value)
+=======
+                            sessionStorage.setItem(\\"username\\", document.getElementById(\\"username\\").value);
+                            sessionStorage.setItem(\\"token\\", response.token);
+                            location.replace(\\"/\\" + sessionStorage.getItem(\\"username\\"));
+>>>>>>> Stashed changes
                         }
                     }
                 }
             }
+
             var signUp = function() {
                 var xhr = new XMLHttpRequest();
                 xhr.open('POST', \\"/user/signup/\\", true);
@@ -79,7 +88,7 @@ exports[`renders homepage correctly 1`] = `
                         } else {
                             document.getElementById(\\"sign-in-button\\").style.display = \\"block\\";
                             document.getElementById(\\"sign-up-button\\").style.display = \\"none\\";
-                            document.getElementById(\\"email-container\\").style.display = \\"none\\";
+                            document.getElementById(\\"email-container\\").style.display = \\"flex\\";
                         }
                     }
                 }
@@ -124,8 +133,8 @@ exports[`renders homepage correctly 1`] = `
                 <span id=\\"close-login-form-container-button\\" onclick=\\"closeLoginForm()\\">&#10006;</span>
                 <form action=\\"/\\" method=\\"post\\" id=\\"login-form\\">
                     <section id=\\"username-container\\">
-                        <label>New Username</label>
-                        <Input id=\\"username\\" type=\\"text\\" name=\\"username\\" placeholder=\\"new username\\"></Input>
+                        <label>Username</label>
+                        <Input id=\\"username\\" type=\\"text\\" name=\\"username\\" placeholder=\\"username\\"></Input>
                     </section>
                     <section id=\\"email-container\\">
                         <lable>Email</lable>
