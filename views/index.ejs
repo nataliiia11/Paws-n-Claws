@@ -55,14 +55,11 @@
                 xhr.onreadystatechange = function() {
                     if(xhr.readyState == 4 && xhr.status == 200) {
                         response = JSON.parse(xhr.response);
-                        console.log(response.result)
-                        console.log(response.token)
                         if(response.result == "false") {
                             window.alert("Wrong username or password");
                         } else{
                             sessionStorage.setItem("username", document.getElementById("username").value);
-                            sessionStorage.setItem("token", response.token)
-                            console.log(sessionStorage.getItem("username") + "  " + sessionStorage.getItem("token"))
+                            sessionStorage.setItem("token", response.token);
                             location.replace("/" + sessionStorage.getItem("username"));
                         }
                     }

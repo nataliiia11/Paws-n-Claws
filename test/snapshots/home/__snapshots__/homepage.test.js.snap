@@ -60,7 +60,13 @@ exports[`renders homepage correctly 1`] = `
                         if(xhr.response == \\"false\\") {
                             window.alert(\\"Wrong username or password\\");
                         } else{
+<<<<<<< Updated upstream
                             location.replace(\\"/\\"+document.getElementById(\\"username\\").value)
+=======
+                            sessionStorage.setItem(\\"username\\", document.getElementById(\\"username\\").value);
+                            sessionStorage.setItem(\\"token\\", response.token);
+                            location.replace(\\"/\\" + sessionStorage.getItem(\\"username\\"));
+>>>>>>> Stashed changes
                         }
                     }
                 }
