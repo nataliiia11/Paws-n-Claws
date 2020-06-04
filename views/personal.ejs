@@ -37,7 +37,8 @@
         if(xhr.status == 200 && xhr.readyState == 4) {
           if(xhr.response == "true")  {
             window.alert("Profile updated");
-            location.reload();
+           // location.reload();
+           location.replace("/" + sessionStorage.getItem("newUsername"));
           }
           else document.getElementById("result").innerHTML = "Wrong password/Invalid input";
         }

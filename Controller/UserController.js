@@ -1,5 +1,6 @@
 "use strict";
 const Users = require("../model/User");
+const Posts = require("../model/Posts");
 const bcrypt = require("bcrypt");
 const fields = ['username', 'email', 'password']
 
@@ -57,6 +58,29 @@ exports.signIn = (req,res) => {
         })
     }) 
 }
+exports.create= (req, res, next) => {
+    if (req.skip) next()
+    const userParams = getUserParams(req.body)
+    const newUser = new User(userParams)
+    User.register(newUser, req.body.password, (e, user) => {
+      if (user) {
+        req.flash('success', `${user.username}'s account created succesfully!`)
+        res.locals.redirect = `/${user.username}`
+        next()
+      } else {
+        req.flash('danger', `failed to create user account because: ${e.message}`)
+        res.locals.user = newUser
+        // res.locals.redirect = '/users/new'
+        // next()
+        res.render('index')
+      }
+    })
+  }
+  exports.redirectView=(req, res, next) => {
+    const redirectPath = res.locals.redirect
+    if (redirectPath !== undefined) res.redirect(303, redirectPath)
+    else next()
+  }
 exports.getUserParams= (body) => { 
     return {
     name: {
@@ -107,10 +131,9 @@ exports.updateUserData = (req, res) => {
                 return res.send(false);
             }
             if(result.n == 0)
-                return res.send(false);
-            return res.send(true);
-        })
+            return res.send(false);
+            return res.locals.redirect(`/${user.username}`)
         
     })
-    
+}) 
 }
