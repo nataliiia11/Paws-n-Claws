@@ -2,6 +2,7 @@
 const Users = require("../model/User");
 const Posts = require("../model/Posts");
 const bcrypt = require("bcrypt");
+const passport = require("passport") 
 const fields = ['username', 'email', 'password']
 
 //initialize database
@@ -38,7 +39,25 @@ exports.saveUser = (req, res) => {
     })
 }
 
-exports.signIn = (req,res) => {
+exports.create= (req, res, next) => {
+    if (req.skip) next();
+    let newUser = new Users( getUserParams(req.body) );
+ Users.register(newUser, req.body.password, (error, user) => { 
+ if (user) {
+ req.flash("success", `${user.username}'s account created
+successfully!`);
+ res.locals.redirect = `/${user.username}`;
+ next(); 
+ } else {
+ req.flash("error", `Failed to create user account because:
+${error.message}.`);
+ res.locals.redirect = "/";
+ next(); 
+ }
+ });
+}
+
+exports.signIn = (req,res,next) => {
     const userPage=req.params.page;
     res.type("application/json")
     Users.findOne({"username" : req.body.username})
@@ -55,43 +74,57 @@ exports.signIn = (req,res) => {
             );
             console.log(result);
             return res.send(result);
-        })
+            
+                });
+                next();
     }) 
 }
-exports.create= (req, res, next) => {
-    if (req.skip) next()
-    const userParams = getUserParams(req.body)
-    const newUser = new User(userParams)
-    User.register(newUser, req.body.password, (e, user) => {
-      if (user) {
-        req.flash('success', `${user.username}'s account created succesfully!`)
-        res.locals.redirect = `/${user.username}`
-        next()
-      } else {
-        req.flash('danger', `failed to create user account because: ${e.message}`)
-        res.locals.user = newUser
-        // res.locals.redirect = '/users/new'
-        // next()
-        res.render('index')
-      }
-    })
-  }
+
+
+
+   
+
   exports.redirectView=(req, res, next) => {
     const redirectPath = res.locals.redirect
     if (redirectPath !== undefined) res.redirect(303, redirectPath)
     else next()
   }
+
+  exports.validate=(req, res, next) => {
+    req
+      .sanitizeBody("email")
+      .normalizeEmail({
+        all_lowercase: true
+      })
+      .trim();
+    req.check("email", "Email is invalid").isEmail();
+  
+    req.check("password", "Password cannot be empty").notEmpty().isLength({
+        min: 5,
+      });
+    req.getValidationResult().then(error => {
+      if (!error.isEmpty()) {
+        let messages = error.array().map(e => e.msg);
+        req.skip = true;
+        req.flash("error", messages.join(" and "));
+        res.locals.redirect = "/";
+        next();
+      } else {
+        next();
+      }
+    });
+  }
+
 exports.getUserParams= (body) => { 
     return {
-    name: {
-    first: body.first,
-    last: body.last
-    },
+    username: body.username,
     email: body.email,
     password: body.password,
-    zipCode: body.zipCode
     };
 };
+
+
+
 
 exports.updateUserData = (req, res) => {
     var newUsername = req.body.newUsername;
@@ -137,3 +170,18 @@ exports.updateUserData = (req, res) => {
     })
 }) 
 }
+
+
+   
+
+exports.authenticate=passport.authenticate("local", {
+    failureRedirect: "/",
+    failureFlash: "Failed to login.",
+    successRedirect: "/:page",
+    successFlash: "Logged in!"
+  })
+exports.logout=(req, res, next) => {
+req.session.destroy()
+req.logout()
+res.redirect('/')
+  }

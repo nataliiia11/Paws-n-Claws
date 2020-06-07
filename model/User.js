@@ -1,7 +1,7 @@
 "use strict";
 const mongoose = require("mongoose");
 const uniqueValidator = require('mongoose-unique-validator');
-
+const passportLocalMongoose=require('passport-local-mongoose')
 
 var userSchema = mongoose.Schema({
     username : {
@@ -36,6 +36,8 @@ userSchema.methods.findLocalUser = function() {
     .exec(); 
    };
    
-
+   userSchema.plugin(passportLocalMongoose, {
+    usernameField: 'email'
+  });
 userSchema.plugin(uniqueValidator);
 module.exports = mongoose.model("User", userSchema);

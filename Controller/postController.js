@@ -8,9 +8,9 @@ exports.getAllPostsPersonal = (req, res) => {
     res.render('personal', {
     newPost:posts,
     page:userPage,
-    userName:userPage
-
-    });
+    userName:userPage,
+    
+     });
     })
     .catch((error) => {
     console.log(error.message);
