@@ -9,8 +9,7 @@ exports.getAllPostsPersonal = (req, res) => {
     newPost:posts,
     page:userPage,
     userName:userPage,
-    
-     });
+      });
     })
     .catch((error) => {
     console.log(error.message);

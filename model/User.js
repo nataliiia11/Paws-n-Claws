@@ -1,7 +1,8 @@
 "use strict";
 const mongoose = require("mongoose");
 const uniqueValidator = require('mongoose-unique-validator');
-const passportLocalMongoose=require('passport-local-mongoose')
+const passportLocalMongoose=require('passport-local-mongoose');
+const bcrypt = require("bcrypt")
 
 var userSchema = mongoose.Schema({
     username : {
@@ -35,9 +36,13 @@ userSchema.methods.findLocalUser = function() {
     .find({username: this.username})
     .exec(); 
    };
+   userSchema.methods.passwordComparison = function(inputPassword){ 
+    let user = this;
+    return bcrypt.compare(inputPassword, user.password); 
+   };
    
    userSchema.plugin(passportLocalMongoose, {
-    usernameField: 'email'
+    usernameField: 'username'
   });
 userSchema.plugin(uniqueValidator);
 module.exports = mongoose.model("User", userSchema);

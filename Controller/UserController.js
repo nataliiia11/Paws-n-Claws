@@ -3,8 +3,15 @@ const Users = require("../model/User");
 const Posts = require("../model/Posts");
 const bcrypt = require("bcrypt");
 const passport = require("passport") 
+const { body, check, validationResult } = require('express-validator')
 const fields = ['username', 'email', 'password']
-
+const getUserParams= body => { 
+    return {
+    username: body.username,
+    email: body.email,
+    password: body.password,
+    };
+};
 //initialize database
 const mongoose = require("mongoose");
 mongoose.connect('mongodb+srv://admin-hanh:hanh@cluster1-yhbkr.mongodb.net/PawsAndClaws', () => {
@@ -38,6 +45,7 @@ exports.saveUser = (req, res) => {
         return res.send(true);
     })
 }
+
 
 exports.create= (req, res, next) => {
     if (req.skip) next();
@@ -85,9 +93,10 @@ exports.signIn = (req,res,next) => {
    
 
   exports.redirectView=(req, res, next) => {
-    const redirectPath = res.locals.redirect
-    if (redirectPath !== undefined) res.redirect(303, redirectPath)
-    else next()
+    let redirectPath = res.locals.redirect;
+    if (redirectPath) res.redirect(redirectPath);
+    else next();
+
   }
 
   exports.validate=(req, res, next) => {
@@ -115,17 +124,23 @@ exports.signIn = (req,res,next) => {
     });
   }
 
-exports.getUserParams= (body) => { 
-    return {
-    username: body.username,
-    email: body.email,
-    password: body.password,
-    };
-};
 
 
-
-
+  exports.show= (req, res, next) => {
+    let userId = req.params.page;
+    Posts.find({signInUser:userId})
+    .exec()
+    .then((posts) => {
+    res.render('personal', {
+    newPost:posts,
+    page:userId,
+    userName:userId,
+      });
+    });
+}
+exports.showView=(req,res,next)=>{
+    res.render('personal')
+}
 exports.updateUserData = (req, res) => {
     var newUsername = req.body.newUsername;
     var username = req.body.username;
@@ -171,17 +186,50 @@ exports.updateUserData = (req, res) => {
 }) 
 }
 
+exports.authenticate= (req, res, next) => {
+    Users.findOne({username: req.body.username}) 
+    .then(user => {
+    if (user) { 
+    user.passwordComparison(req.body.password) 
+    .then(passwordsMatch => {
+    if (passwordsMatch) { 
+        console.log('logged in successful');
+    res.locals.redirect = `/${user.username}`;
+    
+    req.flash("success", `${user.username}'s logged in successfully!`);
+    res.locals.user = user;
+    } else {
+    req.flash("error", "Failed to log in user account Incorrect Password.");
+    console.log('wrong pass');
+    res.locals.redirect = "/";
+    }
+    next(); 
+    });
+    } else {
+    req.flash("error", "Failed to log in user account: User account not found.");
+    console.log('user not found');
+    res.locals.redirect = "/";
+    next();
+    }
+    })
+    .catch(error => { 
+    console.log(`Error logging in user: ${error.message}`);
+    next(error);
+    });
+   }
+   
 
    
 
-exports.authenticate=passport.authenticate("local", {
-    failureRedirect: "/",
-    failureFlash: "Failed to login.",
-    successRedirect: "/:page",
-    successFlash: "Logged in!"
-  })
+// exports.authenticate=passport.authenticate("local", {
+//     failureRedirect: "/",
+//     failureFlash: "Failed to login.",
+//     successRedirect: "/:page",
+//     successFlash: "Logged in!"
+//   })
 exports.logout=(req, res, next) => {
 req.session.destroy()
 req.logout()
+
 res.redirect('/')
   }
