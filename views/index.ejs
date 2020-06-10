@@ -3,7 +3,8 @@
 
     <head>
         <meta name="viewport" content="width=device-width">
-        <title>Paws And Claws</title>
+        <!-- <title>Paws And Claws</title> -->
+        
         <link rel="stylesheet" type="text/css" href="../public/css/home.css">
         <script>
             window.onload = () => {
@@ -87,13 +88,17 @@
                 }
             }
         </script>
+       
+       
+       
     </head>
 
     <body>
-        <section id="header">
+        <!-- <section id="header">
              <h1>Paws And Claws</h1>
         </section>
-        
+      -->
+    
         <div id="parallax">
             <section class = "highlights">
                 <div class="highlights-background">
@@ -119,12 +124,13 @@
                 </div>
             </section>
         </div>
-        
+        <form action='/users/signin/' method='get'>
         <div id="login-container">
-            <section id="login-direction" onclick="showLoginForm()">Login to start Using</section>
-            <div id="login-form-container">
+            
+            <button id="login-direction" type='submit'>Login to start Using</button>
+            <!-- <div id="login-form-container">
                 <span id="close-login-form-container-button" onclick="closeLoginForm()">&#10006;</span>
-                <form action="/" method="post" id="login-form">
+                <form action="/users/signin" method="post" id="login-form">
                     <section id="username-container">
                         <label>Username</label>
                         <Input id="username" type="text" name="username" placeholder="username"></Input>
@@ -141,9 +147,11 @@
                   
                     <input type="button" id="sign-in-button" value="Sign In" onclick="signIn()"></input>
                     <input type="button" id="sign-up-button" value="Sign Up" onclick="signUp()"></input>
-                    <a id="signup">Haven't got an account yet? <span onclick="signUpButton()">sign up</span></a>
-                </form>
-            </div>
+                    <a id="signup">Haven't got an account yet? <span onclick="signUpButton()">sign up</span></a> -->
+               
+            <!-- </div> -->
+        </form>
         </div>
+    </form>
     </body>
 </html>

@@ -1,0 +1,35 @@
+<link rel="stylesheet" type="text/css" href="/css/home.css">
+<style>
+    #sign-up-button {
+    min-width: 200px;
+    width: 25vw;
+    background: rgba(172, 159, 139,0.5);
+    border: none;
+    height: 50px;
+    border-radius: 25px;
+    color: rgba(202, 189, 169,1);
+    text-align: center;
+}
+</style>
+
+  <div id="login-form-container">
+    <span id="close-login-form-container-button" onclick="closeLoginForm()">&#10006;</span>
+    <form action="/users/signup" method="post" id="login-form">
+        <section id="username-container">
+            <label>Username</label>
+            <Input id="username" type="text" name="username" placeholder="username" required></Input>
+        </section>
+        <section id="email-container">
+            <lable>Email</lable>
+            <Input id="email" type="text" name="email" placeholder="email" required></Input>
+        </section>
+        <section id="password-container">
+            <lable>Password</lable>
+            <Input id="password" type="password" name="password" placeholder="password" required></Input>
+        </section>
+
+      
+        <button type="submit" id="sign-up-button" value="Sign Un">Sign Up</button>
+        
+        </form>
+</div>
