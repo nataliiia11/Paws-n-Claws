@@ -1,0 +1,31 @@
+<link rel="stylesheet" type="text/css" href="/css/home.css">
+
+<style>
+  #username-container{
+    display: none;
+}
+
+</style>
+  <div id="login-form-container">
+    
+    <span id="close-login-form-container-button" onclick="closeLoginForm()">&#10006;</span>
+    <form action="/users/signin" method="post" id="login-form">
+        <section id="username-container">
+            <label>Username</label>
+            <Input id="username" type="text" name="username" placeholder="username"></Input>
+        </section>
+        <section id="email-container">
+            <lable>Email</lable>
+            <Input id="email" type="text" name="email" placeholder="email" required></Input>
+        </section>
+        <section id="password-container">
+            <lable>Password</lable>
+            <Input id="password" type="password" name="password" placeholder="password" required></Input>
+        </section>
+
+      
+        <button type="submit" id="sign-in-button" value="Sign In" >Sign In</button>
+        
+        <span id="signup">Haven't got an account yet? <a href="/users/signup/" id="signup">Sign up</a> </span>
+    </form>
+</div>

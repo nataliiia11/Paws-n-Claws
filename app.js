@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const router=express.Router();
 const morgan = require('morgan')
 const passport = require("passport"); 
+const layouts = require("express-ejs-layouts");
+const methodOverride = require("method-override")
 const app= new express();
 const multer = require('multer');
 const upload = multer({dest: __dirname + '/uploads/images'});
@@ -12,7 +14,6 @@ const expressSession = require("express-session");
 const expressValidator = require( "express-validator") 
 const cookieParser = require("cookie-parser");
 const flash = require("connect-flash");
-const userRouter = require('./Router/userRouter');
 const postController = require('./Controller/postController');
 const errorController = require('./Controller/errorController');
 const userController = require('./Controller/UserController');
@@ -29,12 +30,17 @@ app.use(morgan(':method:url:status*:response-time ms'))
 
 
 app.set('view engine','ejs');
-
-router.use(bodyParser.urlencoded({extended:true}));
-
 router.use(express.static('public'));
+router.use(layouts);
+router.use(express.urlencoded({extended:false}));
+router.use(
+	methodOverride("_method", {
+	  methods: ["POST", "GET"]
+	})
+  );
 
-//app.use(layouts);
+
+
 router.use(express.json());
 
 router.use(cookieParser("secret_passcode")); 
@@ -85,24 +91,18 @@ router.get('/newsfeed',postController.getAllPostsNewsfeed);
 // router.get('/',(req,res)=>{
 // 	res.render('index');
 // });
-router.get('/flash', function(req, res){
-	// Set a flash message by passing the key, followed by the value, to req.flash().
-	req.flash('info', 'Flash is back!')
-	res.redirect('/');
-  });
-   
-  router.get('/', function(req, res){
-	// Get an array of flash messages by passing the key to req.flash()
-	res.render('index', { messages: req.flash('info') });
-  });
-  
 
-router.post('/user/signup/',userController.validate,userController.create, userController.redirectView);
-router.post('/user/signin/',userController.authenticate, userController.redirectView);
+   
+  router.get('/',homeController.index);
+  router.get("/users", userController.index, userController.indexView);
+router.get('/users/signin',userController.signin)
+router.get('/users/signup',userController.signup)
+router.post('/users/signup',userController.validate,userController.create,userController.redirectView);
+router.post('/users/signin',userController.authenticate,userController.redirectView);
 router.get('/logout',userController.logout)
 router.put('/update', userController.updateUserData);
 router.get("/chat", homeController.chat);
-router.get('/:page',postController.getAllPostsPersonal)
+router.get('/users/:page',postController.getAllPostsPersonal)
 
 router.post('/:page/delete',postController.deletePost);
 

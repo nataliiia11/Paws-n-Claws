@@ -9,7 +9,7 @@ require('dotenv').config();
 
 const mongodbURI = process.env.MONGODB_URI || ((process.env.NODE_ENV === 'test') ? 'mongodb://localhost:27017/PawsnClaws' : 'mongodb+srv://admin-hanh:hanh@cluster1-yhbkr.mongodb.net/PawsAndClaws')
 
-
+mongoose.Promise = global.Promise;
 //mongoose implementation
 mongoose.connect(mongodbURI, {useNewUrlParser: true, useUnifiedTopology: true});
 var database = mongoose.connection;

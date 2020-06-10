@@ -129,23 +129,10 @@
     border-bottom: 2px solid;
 }
 </style>
-    
 <link rel="stylesheet" type="text/css" href="../public/css/home.css">
 <link rel="stylesheet" type="css/text" href="../public/css/personal-style.css">
 <body>
-  <div class="flashes">
-    <% if (flashMessages) { %>
-    <% if (flashMessages.success) { %>
-    <div class="flash success">
-        <%= flashMessages.success %>
-    </div>
-    <% } else if (flashMessages.error) { %>
-    <div class="error">
-        <%= flashMessages.error %>
-    </div>
-    <% } %>
-    <% } %>
-</div>
+  
   <form id="post-form" action='/<%=page%>' method='post'>
 
 

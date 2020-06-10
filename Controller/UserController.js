@@ -2,9 +2,8 @@
 const Users = require("../model/User");
 const Posts = require("../model/Posts");
 const bcrypt = require("bcrypt");
-const passport = require("passport") 
+const passport=require('passport')
 const { body, check, validationResult } = require('express-validator')
-const fields = ['username', 'email', 'password']
 const getUserParams= body => { 
     return {
     username: body.username,
@@ -18,16 +17,30 @@ mongoose.connect('mongodb+srv://admin-hanh:hanh@cluster1-yhbkr.mongodb.net/PawsA
     Users.init();
 }
 )
-
-exports.findAllUser = (req, res) => {
+module.exports={
+    index: (req, res, next) => {
+        Users.find()
+          .then(users => {
+            res.locals.users = users;
+            next();
+          })
+          .catch(error => {
+            console.log(`Error fetching users: ${error.message}`);
+            next(error);
+          });
+      },
+      indexView: (req, res) => {
+        res.render("users/index2");
+      },
+findAllUser : (req, res) => {
     Users.find()
         .exec()
         .then((users) => {
            return res.send(users)
         })
-}
+},
 
-exports.saveUser = (req, res) => {
+ saveUser : (req, res) => {
     var password = "";
     if(req.body.password != "") password = bcrypt.hashSync(req.body.password, 10);
     console.log(req.body.password);
@@ -44,31 +57,63 @@ exports.saveUser = (req, res) => {
         }
         return res.send(true);
     })
-}
+},
+
+// create:(req, res, next) => {
+    
+//     const userParams = getUserParams(req.body)
+//     const newUser = new Users(userParams)
+//     Users.register(newUser, req.body.password, (e, user) => {
+//       if (user) {
+//         req.flash('success', `${user.username}'s account created succesfully!`)
+//         res.locals.redirect = `/${user.username}`
+//         next()
+//       } else {
+//         req.flash('error', `failed to create user account because: ${e.message}`)
+//         res.locals.user = newUser
+//         res.locals.redirect = '/'
+//         next()
+        
+//       }
+//     })
+//   },
 
 
-exports.create= (req, res, next) => {
-    if (req.skip) next();
-    let newUser = new Users( getUserParams(req.body) );
- Users.register(newUser, req.body.password, (error, user) => { 
- if (user) {
- req.flash("success", `${user.username}'s account created
-successfully!`);
- res.locals.redirect = `/${user.username}`;
- next(); 
- } else {
- req.flash("error", `Failed to create user account because:
-${error.message}.`);
- res.locals.redirect = "/";
- next(); 
- }
+create:(req, res, next) => {
+    let userParams = getUserParams(req.body);
+    console.log(userParams)
+    Users.create(userParams)
+    .then(user => {
+    req.flash("success", `${user.username}'s account created
+   successfully!`); 
+    res.locals.redirect = `/users/${user.username}`;
+    res.locals.user = user;
+    next();
+    })
+    .catch(error => {
+    console.log(`Error saving user: ${error.message}`);
+    res.locals.redirect = "/users/signup";
+    req.flash(
+    "error",
+    `Failed to create user account because: ${error.message}.` 
+    );
+    next();
  });
-}
+},
 
-exports.signIn = (req,res,next) => {
+redirectView:(req, res, next) => {
+    let redirectPath = res.locals.redirect;
+    if (redirectPath) res.redirect(redirectPath);
+    else next();
+
+  },
+
+
+
+signIn: (req,res,next) => {
     const userPage=req.params.page;
     res.type("application/json")
-    Users.findOne({"username" : req.body.username})
+    Users.findOne({"email" : req.body.email})
     .then((result) => {
         if(result == null) return res.send(JSON.stringify({"result" : false}));
         const dbPassword = result.password;
@@ -81,25 +126,19 @@ exports.signIn = (req,res,next) => {
                 }
             );
             console.log(result);
-            return res.send(result);
+            return res.redirect(`/${result.username}`);
             
                 });
                 next();
     }) 
-}
-
+},
 
 
    
 
-  exports.redirectView=(req, res, next) => {
-    let redirectPath = res.locals.redirect;
-    if (redirectPath) res.redirect(redirectPath);
-    else next();
+ 
 
-  }
-
-  exports.validate=(req, res, next) => {
+  validate:(req, res, next) => {
     req
       .sanitizeBody("email")
       .normalizeEmail({
@@ -107,41 +146,67 @@ exports.signIn = (req,res,next) => {
       })
       .trim();
     req.check("email", "Email is invalid").isEmail();
-  
-    req.check("password", "Password cannot be empty").notEmpty().isLength({
-        min: 5,
-      });
+    req.check("password", "Password cannot be empty").notEmpty();
+
     req.getValidationResult().then(error => {
       if (!error.isEmpty()) {
         let messages = error.array().map(e => e.msg);
         req.skip = true;
         req.flash("error", messages.join(" and "));
-        res.locals.redirect = "/";
+        res.locals.redirect = "/users/signup";
         next();
       } else {
         next();
       }
     });
-  }
-
-
-
-  exports.show= (req, res, next) => {
-    let userId = req.params.page;
-    Posts.find({signInUser:userId})
-    .exec()
-    .then((posts) => {
-    res.render('personal', {
-    newPost:posts,
-    page:userId,
-    userName:userId,
+  },
+authenticate: (req, res, next) => {
+    Users.findOne({ email: req.body.email })
+      .then(user => {
+        if (user) {
+          user.passwordComparison(req.body.password).then(passwordsMatch => {
+            if (passwordsMatch) {
+              res.locals.redirect = `/users/${user.username}`;
+              console.log('found')
+              req.flash("success", `${user.username}'s logged in successfully!`);
+              res.locals.user = user;
+            } else {
+              req.flash("error", "Failed to log in user account: Incorrect Password.");
+              res.locals.redirect = "/users/signin";
+              console.log('false pass')
+            }
+            next();
+          });
+        } else {
+          req.flash("error", "Failed to log in user account: User account not found.");
+          res.locals.redirect = "/";
+          console.log('not found')
+          next();
+        }
+      })
+      .catch(error => {
+        console.log(`Error logging in user: ${error.message}`);
+        next(error);
       });
-    });
-}
-exports.showView=(req,res,next)=>{
-    res.render('personal')
-}
-exports.updateUserData = (req, res) => {
+  },
+
+
+//   show: (req, res, next) => {
+//     let userId = req.params.id;
+//     Users.findById(userId)
+//       .then(user => {
+//         res.locals.user = user;
+//         next();
+//       })
+//       .catch(error => {
+//         console.log(`Error fetching user by ID: ${error.message}`);
+//         next(error);
+//       });
+// },
+// showView:(req, res) => {
+//     res.render("users/show");
+//   },
+updateUserData :(req, res) => {
     var newUsername = req.body.newUsername;
     var username = req.body.username;
     var email = req.body.email;
@@ -184,52 +249,31 @@ exports.updateUserData = (req, res) => {
         
     })
 }) 
-}
+},
 
-exports.authenticate= (req, res, next) => {
-    Users.findOne({username: req.body.username}) 
-    .then(user => {
-    if (user) { 
-    user.passwordComparison(req.body.password) 
-    .then(passwordsMatch => {
-    if (passwordsMatch) { 
-        console.log('logged in successful');
-    res.locals.redirect = `/${user.username}`;
-    
-    req.flash("success", `${user.username}'s logged in successfully!`);
-    res.locals.user = user;
-    } else {
-    req.flash("error", "Failed to log in user account Incorrect Password.");
-    console.log('wrong pass');
-    res.locals.redirect = "/";
-    }
-    next(); 
-    });
-    } else {
-    req.flash("error", "Failed to log in user account: User account not found.");
-    console.log('user not found');
-    res.locals.redirect = "/";
-    next();
-    }
-    })
-    .catch(error => { 
-    console.log(`Error logging in user: ${error.message}`);
-    next(error);
-    });
-   }
+
    
 
    
 
-// exports.authenticate=passport.authenticate("local", {
+// authenticate:passport.authenticate("local", {
 //     failureRedirect: "/",
 //     failureFlash: "Failed to login.",
-//     successRedirect: "/:page",
+//     successRedirect: "/",
 //     successFlash: "Logged in!"
-//   })
-exports.logout=(req, res, next) => {
+//   }),
+logout:(req, res, next) => {
 req.session.destroy()
 req.logout()
 
 res.redirect('/')
+  },
+
+signin:(req, res) => {
+    res.render("users/signin");
+  },
+
+  signup:(req, res) => {
+    res.render("users/signup");
   }
+}

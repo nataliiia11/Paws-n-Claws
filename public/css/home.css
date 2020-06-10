@@ -134,9 +134,7 @@ h1{
     color: rgba(202, 189, 169,1);
 }
 
-#email-container{
-    display: none;
-}
+ 
 
 #username-container > input, #password-container > input, #email-container>input {
     background: rgba(152, 139, 119,1);
@@ -166,9 +164,9 @@ h1{
     text-align: center;
 }
 
-#sign-up-button {
+/* #sign-up-button {
     display: none;
-}
+} */
 
 #username-container > input:focus, #username-container > input:focus::placeholder, #password-container > input:focus, #password-container > input:focus::placeholder,#email-container > input:focus, #email-container > input:focus::placeholder {
     color: rgba(222, 209, 189,1);
@@ -195,13 +193,13 @@ h1{
 }
 
 .flashes {
-    background: rgba(193, 255, 193, .7);
-    color: #625a56;
+    background: rgba(30, 230, 97, 0.555);
+    color: #0a0a0a;
     width: 100%;
     text-align: center;
-    padding: 10px 30px;
+    padding: 20px 30px;
     position: absolute;
-    top: 110px;
+    top: 50px;
     z-index: 2;
   }
   
