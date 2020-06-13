@@ -104,11 +104,11 @@ router.put('/update', userController.updateUserData);
 router.get("/chat", homeController.chat);
 router.get('/users/:page',postController.getAllPostsPersonal)
 
-router.post('/:page/delete',postController.deletePost);
+router.post('/users/:page/delete',postController.deletePost);
 
 
 
-router.post('/:page',postController.savePost);
+router.post('/users/:page',postController.savePost);
 router.post('/upload', upload.single('photo'), (req, res) => {
 	if(req.file) {
 		res.json(req.file);
