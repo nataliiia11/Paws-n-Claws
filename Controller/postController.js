@@ -48,7 +48,7 @@ exports.getAllPostsPersonal = (req, res) => {
     });
     newPost.save()
     .then( () => {
-    res.redirect('/'+userPage);
+    res.redirect('/users/'+userPage);
     })
     .catch(error => {
     res.send(error);
@@ -61,7 +61,7 @@ exports.getAllPostsPersonal = (req, res) => {
     if (selectedPost.match(/^[0-9a-fA-F]{24}$/)) {
         Posts.findByIdAndDelete(selectedPost,(err) => {
             if (err) console.log(err)
-            else { res.redirect('/'+userPage) }})
+            else { res.redirect('/users/'+userPage) }})
       }
  }
 
