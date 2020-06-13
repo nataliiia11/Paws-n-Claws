@@ -14,16 +14,16 @@ describe('User Model Test', () => {
         });
     });
   
-    it('create & save user successfully', async () => {
-        const validUser = new UserModel(userData);
-        const savedUser = await validUser.save();
-        // Object Id should be defined when successfully saved to MongoDB.
-        expect(savedUser._id).toBeDefined();
-        expect(savedUser.username).toBe(userData.username);
-        expect(savedUser.email).toBe(userData.email);
-        expect(savedUser.password).toBe(userData.password);
+    // it('create & save user successfully', async () => {
+    //     const validUser = new UserModel(userData);
+    //     const savedUser = await validUser.save();
+    //     // Object Id should be defined when successfully saved to MongoDB.
+    //     expect(savedUser._id).toBeDefined();
+    //     expect(savedUser.username).toBe(userData.username);
+    //     expect(savedUser.email).toBe(userData.email);
+    //     expect(savedUser.password).toBe(userData.password);
         
-    });
+    // });
 
     // Test Schema is working!!!
     // Shouldn't be able to add in any field that isn't defined in the schema

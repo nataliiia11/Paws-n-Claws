@@ -12,10 +12,7 @@
 </head>
 
 <body>
-	<section id="header">
-		<h1>Paws And Claws</h1>
-		
-	</section>
+	<%- include('partials/header'); -%>
 
 	<div class="flashes">
 		<% if (flashMessages) { %>
@@ -31,7 +28,7 @@
 		<% } %>
 	</div>
 
-	<div class="container">
+	<div>
 		<%- body %>
 	</div>
 

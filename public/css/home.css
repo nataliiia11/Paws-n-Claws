@@ -193,16 +193,18 @@ h1{
 }
 
 .flashes {
-    background: rgba(30, 230, 97, 0.555);
+    background: rgba(30, 230, 97, 0);
     color: #0a0a0a;
     width: 100%;
     text-align: center;
     padding: 20px 30px;
     position: absolute;
-    top: 50px;
+    top: 35px;
     z-index: 2;
   }
-  
+  .success{
+    background: rgba(30, 230, 97, 0.7);
+  }
   .error {
     color: #fff;
     background: rgba(209, 46, 42, 0.7);
