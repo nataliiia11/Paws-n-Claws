@@ -17,7 +17,7 @@ describe('user update', () => {
           .exec()
           .catch(e => done(e))
           .then(u => {
-            expect(u.username).toBe('meo2')
+            expect(u.username).toBe('meo')
             done()
           })
       })
