@@ -1,10 +1,10 @@
-"use strict";
-const mongoose = require("mongoose");
+'use strict';
+const mongoose = require('mongoose');
 var postSchema = mongoose.Schema({
-    content : String,
-    signInUser: String
+	content : String,
+	signInUser: String
     
-})
+});
 
 
-module.exports = mongoose.model("Post", postSchema);
+module.exports = mongoose.model('Post', postSchema);
