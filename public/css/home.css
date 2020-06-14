@@ -13,6 +13,12 @@ body{
     z-index: 2;
 }
 
+.modal-dialog imp-bg
+{
+    background-color: whitesmoke;
+    opacity: 1;
+}
+
 h1{
     color: white;
 }
@@ -209,3 +215,8 @@ h1{
     color: #fff;
     background: rgba(209, 46, 42, 0.7);
   }
+  .modal-dialog
+{
+    background-color: whitesmoke;
+    opacity: 1;
+}

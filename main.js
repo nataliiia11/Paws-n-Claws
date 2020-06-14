@@ -1,13 +1,13 @@
 
 
-'use strict'
+'use strict';
 
-const app = require('./app')
+const app = require('./app');
 const mongoose = require('mongoose');  
 require('dotenv').config();
+//const router = require('./routes/index'); 
 
-
-const mongodbURI = process.env.MONGODB_URI || ((process.env.NODE_ENV === 'test') ? 'mongodb://localhost:27017/PawsnClaws' : 'mongodb+srv://admin-hanh:hanh@cluster1-yhbkr.mongodb.net/PawsAndClaws')
+const mongodbURI = process.env.MONGODB_URI || ((process.env.NODE_ENV === 'test') ? 'mongodb://localhost:27017/PawsnClaws' : 'mongodb+srv://admin-hanh:hanh@cluster1-yhbkr.mongodb.net/PawsAndClaws');
 
 mongoose.Promise = global.Promise;
 //mongoose implementation
@@ -20,11 +20,11 @@ database.once('open', () => {
 
 
 const server=app.listen(app.get('port'), () => {
-    console.log(`Server running at http://localhost:${app.get('port')}`)
-  })
+	console.log(`Server running at http://localhost:${app.get('port')}`);
+});
 
-var io = require("socket.io")(server); 
-require("./Controller/chatController")(io);
+var io = require('socket.io')(server); 
+require('./Controller/chatController')(io);
 
-
+//app.use('/', router);
  

@@ -100,3 +100,8 @@
 #signup > span:hover {
     cursor: pointer;
 }
+.modal-dialog
+{
+    background-color: whitesmoke;
+    opacity: 1;
+}
