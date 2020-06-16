@@ -8,6 +8,7 @@ router.use('/api', apiRoutes);
 const userController = require('../Controller/UserController');
 const postController = require('../Controller/postController');
 const homeController =require('../Controller/homeController');
+const apiController = require('../Controller/apiController');
 
 router.get('/', userController.findAllUser);
 router.post('/signup/',userController.validate,userController.create);
@@ -15,6 +16,7 @@ router.post('/user/signin/',userController.authenticate,postController.getAllPos
 router.get('/logout',userController.logout);
 router.put('/update', userController.updateUserData);
 router.get('/chat', homeController.chat);
+router.get('/.', apiController.)
 //router.get('/:page',userController.validate,postController.getAllPostsPersonal,userController.authenticate)
 
 
