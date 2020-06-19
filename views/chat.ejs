@@ -12,11 +12,13 @@ const socket = io()
   $(document).ready(() => {
     
     $("#chatForm").submit(() => {
-      text = $("#chat_input").val(); 
+      text = $("#chat-input").val(); 
       userId = $("#chat-user-id").val(); 
       userName = $("#chat-user-name").val(), 
       socket.emit("message",{
           content: text,
+          userName: userName,
+          userId: userId
           
       });
     
@@ -54,23 +56,26 @@ let getCurrentUserClass = (id) => {
 </script>
 </head>
 <body>
-    <div class="container">
+  <div class='container'>
+      
         <h1>Chat</h1>
-        <form id="chatForm"> 
-        <input id="chat-input" type="text"> 
-        <input type="submit" value="Send">
+        <form id="chatForm">
+          <input id="chat-input" type="text">
+         
+          <input type="submit" class="button" value="Send">
         </form>
-        <div id="chat"></div> 
-       </div>
+        <div id="chat"></div>
+        
+      </div>
 
       
 </body>
 </html> -->
 
-<!doctype html>
+<!-- <!doctype html>
 <html>
   <head>
-    <title>Socket.IO chat</title>
+    
     <link rel="stylesheet" type="text/css" href="../public/css/chat.css">
     <script src="/socket.io/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -109,4 +114,47 @@ let getCurrentUserClass = (id) => {
       <input id="m" autocomplete="off" /><button>Send</button>
     </form>
   </body>
-</html>
+</html> -->
+
+<link rel="stylesheet" type="text/css" href="../public/css/chat.css">
+<script src = "/socket.io/socket.io.js"></script>
+<script>
+  var socket = io();
+  function setUsername() {
+     socket.emit('setUsername', document.getElementById('name').value);
+  };
+  var user;
+  socket.on('userExists', function(data) {
+     document.getElementById('error-container').innerHTML = data;
+  });
+  socket.on('userSet', function(data) {
+     user = data.username;
+     document.body.innerHTML = '<input type = "text" id = "message">\
+     <button type = "button" name = "button" onclick = "sendMessage()">Send</button>\
+     <div id = "message-container"></div>';
+  });
+  function sendMessage() {
+     var msg = document.getElementById('message').value;
+     if(msg) {
+        socket.emit('msg', {message: msg, user: user});
+     }
+  }
+  socket.on('newmsg', function(data) {
+     if(user) {
+        document.getElementById('message-container').innerHTML += '<div><b>' + 
+           data.user + '</b>: ' + data.message + '</div>'
+     }
+  })
+</script>
+   <!-- <script>
+      var socket = io();
+   </script> -->
+   <body>
+    <div id ="container"></div>
+    <input id = "name" type = "text" name = "name" value = "" 
+       placeholder = "Enter your name!">
+    <button type = "button" name = "button" onclick = "setUsername()">
+       Let me chat!
+    </button>
+      
+   </body>
