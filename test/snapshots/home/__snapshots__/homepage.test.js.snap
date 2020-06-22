@@ -13,8 +13,7 @@ exports[`renders homepage correctly 1`] = `
 	<script src=\\"https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js\\"></script>
 <script src=\\"https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js\\" integrity=\\"sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy\\"
         crossorigin=\\"anonymous\\"></script>
-		<script type=\\"text/javascript\\" src=\\"/js/jquery.min.js\\"></script>
-<script type=\\"text/javascript\\" src=\\"/js/bootstrap.min.js\\"></script>
+
 <!--@Nat: this script is related to users/usersModal.ejs file. It set an AJAX for \\"Latest Users\\" button to show data for API.
 I tried to create it in separate file called js/recipeApp.js directory, but I failed to set a correct link -->
 <script >
@@ -61,17 +60,24 @@ $(document).ready(() => {
         <link rel=\\"stylesheet\\" href=\\"/css/styles.css\\">
         <script src=\\"//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js\\"></script>
         <script src=\\"//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js\\"></script>
-
+<style>
+  .nav-link {
+color: rgb(255, 255, 255) !important;
+}
+</style>
 </head>
 
     <nav class=\\"navbar navbar-expand-lg navbar-light bg-ligh\\">
         <a class=\\"navbar-brand mb-0 h1\\">Paws&Claws</a>
-       
-         
-        <form class=\\"form-inline\\" action=\\"/logout\\" method=\\"get\\">
-        
-          <button class=\\"btn btn-outline-light my-2 my-sm-0\\" type=\\"submit\\">Log out</button>
-        </form>
+        <ul class=\\"navbar-nav ml-auto\\">
+          <li class=\\"nav-item\\">
+              <a class=\\"nav-link\\" href=\\"/chat\\">Chat</a>
+          </li>
+          <li class=\\"nav-item\\">
+              <a class=\\"nav-link\\" href=\\"/logout\\">Log out</a>
+          </li>
+      </ul>
+  
       </nav>
 
 
@@ -79,6 +85,8 @@ $(document).ready(() => {
 
 
 
+	
+	   
 	<div class=\\"flashes\\">
 		
 		
