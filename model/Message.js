@@ -13,11 +13,6 @@ const messageSchema = new Schema(
       type: String,
       required: true
     },
-    user: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-      required: true
-    }
   },
   { timestamps: true }
 );

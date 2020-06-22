@@ -1,6 +1,6 @@
-// 'use strict';
-// eslint-disable-next-line no-unused-vars
-// const Message = require('../model/Message');
+
+
+const Message = require('../model/Message');
 // module.exports = io => {
   
         
@@ -47,37 +47,44 @@
 	// 	});
 	//   };
 module.exports = io => {
-// users = [];
-// io.on('connection', function(socket) {
-//    console.log('A user connected');
-//    socket.on('setUsername', function(data) {
-      
-//          users.push(data);
-//          socket.emit('userSet', {username: data});
+users = [];
+io.on('connection', function(socket) {
+   console.log('A user connected');
+
+   Message.find({})
+   		.sort({ createdAt: -1 })
+   		.limit(10)
+   		.then(messages => {
+   		  socket.emit("load all messages", messages.reverse());
+		   });
+		   
+   socket.on('setUsername', function(data) {
+	if(users.indexOf(data) > -1) {
+		socket.emit('userExists', data + ' username is taken! Try some other username.');
+	 } else {
+         users.push(data);
+		 socket.emit('userSet', {username: data});
+	 }
      
-//    })
-//    socket.on('msg', function(data) {
-// 	//Send message to everyone
-// 	io.sockets.emit('newmsg', data);
-//  })
-// });
-let interval;
+   })
+   socket.on('msg', function(data) {
+	//Send message to everyone
+	let messageAttributes = {
+		 			content: data.message,
+		 			userName: data.user,
+				  }
+	m = new Message(messageAttributes);
+	 		m.save()
+	 		  .then(() => {
+				io.sockets.emit('newmsg', messageAttributes);
+	 		  })
+			   .catch(error => console.log(`error: ${error.message}`));
+	
+ })
+ socket.on('disconnect', function(socket) {
+	console.log('A user disconnected');
+	users.pop()
+})
+})
 
-io.on("connection", (socket) => {
-  console.log("New client connected");
-  if (interval) {
-    clearInterval(interval);
-  }
-  interval = setInterval(() => getApiAndEmit(socket), 1000);
-  socket.on("disconnect", () => {
-    console.log("Client disconnected");
-    clearInterval(interval);
-  });
-});
-
-const getApiAndEmit = socket => {
-  const response = new Date();
-  // Emitting a new message. Will be consumed by the client
-  socket.emit("FromAPI", response);
-};
-	}
+}

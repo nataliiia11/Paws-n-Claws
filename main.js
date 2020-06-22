@@ -26,5 +26,5 @@ const server=app.listen(app.get('port'), () => {
 var io = require('socket.io')(server); 
 require('./Controller/chatController')(io);
 
-//app.use('/', router);
+
  
