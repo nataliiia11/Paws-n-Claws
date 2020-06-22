@@ -198,10 +198,10 @@
   <div id = "update-container">
     <div id="edit-profile-form-container">
       <span id="close-update-form-container-button" onclick="closeUpdateForm()">&#10006;</span>
-      <form action="/" method="post" id="update-form">
+      <form action="/users/<%=userName%>/update" method="post" id="update-form">
         <section id="username-container">
-            <label>New Username</label>
-            <Input id="username" type="text" name="username" placeholder="new username"></Input>
+            <label>Username</label>
+            <Input id="username" type="text" name="username" placeholder="username"></Input>
         </section>
         <section id="email-container">
             <lable>Email</lable>
@@ -209,14 +209,14 @@
         </section>
         <section id="new-password-container">
             <lable>New Password</lable>
-            <Input id="new-password" type="password" name="pass" placeholder="new password"></Input>
+            <Input id="new-password" type="password" name="password" placeholder="new password"></Input>
         </section>
         <section id="password-container">
           <lable>Password</lable>
-          <Input id="password" type="password" name="pass" placeholder="password"></Input>
+          <Input id="password" type="password" name="password" placeholder="password"></Input>
         </section>
         
-        <input type="button" id="update-button" value="Update" onclick=""></input>
+        <button type="submit" id="update-button" value="Update">Update</button>
         <span id = "result"></span>
       </form>
     </div>

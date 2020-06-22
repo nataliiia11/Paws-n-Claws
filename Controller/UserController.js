@@ -68,24 +68,7 @@ module.exports={
 		});
 	},
 
-	// create:(req, res, next) => {
-    
-	//     const userParams = getUserParams(req.body)
-	//     const newUser = new Users(userParams)
-	//     Users.register(newUser, req.body.password, (e, user) => {
-	//       if (user) {
-	//         req.flash('success', `${user.username}'s account created succesfully!`)
-	//         res.locals.redirect = `/${user.username}`
-	//         next()
-	//       } else {
-	//         req.flash('error', `failed to create user account because: ${e.message}`)
-	//         res.locals.user = newUser
-	//         res.locals.redirect = '/'
-	//         next()
-        
-	//       }
-	//     })
-	//   },
+
 
 
 	create:(req, res, next) => {
@@ -176,9 +159,9 @@ module.exports={
 					user.passwordComparison(req.body.password).then(passwordsMatch => {
 						if (passwordsMatch) {
 							res.locals.redirect = `/users/${user.username}`;
-							console.log('found');
 							req.flash('success', `${user.username}'s logged in successfully!`);
 							res.locals.user = user;
+							
 						} else {
 							req.flash('error', 'Failed to log in user account: Incorrect Password.');
 							res.locals.redirect = '/users/signin';
@@ -215,6 +198,28 @@ module.exports={
 	// showView:(req, res) => {
 	//     res.render("users/show");
 	//   },
+	
+	  update: (req, res, next) => {
+		let username = req.params.page,
+		  userParams = {
+			username: username,
+			email: req.body.email,
+			password: req.body.password,
+		
+		  };
+		Users.findOneAndUpdate(username, {
+		  $set: userParams
+		})
+		  .then(user => {
+			res.locals.redirect = `/users/${userId}`;
+			res.locals.user = user;
+			next();
+		  })
+		  .catch(error => {
+			console.log(`Error updating user by ID: ${error.message}`);
+			next(error);
+		  });
+	  },
 	updateUserData :(req, res) => {
 		var newUsername = req.body.newUsername;
 		var username = req.body.username;
@@ -254,7 +259,7 @@ module.exports={
 				}
 				if(result.n == 0)
 					return res.send(false);
-				return res.locals.redirect(`/${user.username}`);
+				return res.locals.redirect(`/users/${user.username}`);
         
 			});
 		}); 

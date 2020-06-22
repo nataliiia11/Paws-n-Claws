@@ -1,112 +1,79 @@
-<!-- <!DOCTYPE html>
-<html>
-<head>
-<script src="/socket.io/socket.io.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  
+
 <link rel="stylesheet" type="text/css" href="../public/css/chat.css">
-
+<script src = "/socket.io/socket.io.js"></script>
 <script>
-const socket = io()
-
-  $(document).ready(() => {
-    
-    $("#chatForm").submit(() => {
-      text = $("#chat_input").val(); 
-      userId = $("#chat-user-id").val(); 
-      userName = $("#chat-user-name").val(), 
-      socket.emit("message",{
-          content: text,
-          
-      });
-    
-    
-      $("#chat-input").val("");
-      return false;
-    });
   
-    socket.on("message", message => {
-      displayMessage(message);
-    });
+  var socket = io();
 
-    socket.on("load all messages", data => {
-    data.forEach(message => {
-      displayMessage(message);
-    });
+  function setUsername() {
+     socket.emit('setUsername', document.getElementById('name').value);
+
+  };
+  var user;
+  socket.on('userExists', function(data) {
+     document.getElementById('error-container').innerHTML = data;
   });
+  socket.on('userSet', function(data) {
+   user = data.username
+   document.getElementById('message-container').style.display="block";
+   document.getElementById('username-req').style.display="none";
+   document.getElementById('chat-section').style.display="inline";
   
-    let displayMessage = (message) => {
- $("#chat").prepend(
+  });
+  function sendMessage() {
+   var user = document.getElementById('name').value;
+     var msg = document.getElementById('message').value;
+     if(msg) {
+        socket.emit('msg', {message: msg,user: user});
+      
+  }}
+
+  let displayMessage = (message) => {
+ $("#message-container").prepend(
  $("<li>").html(`
-    <strong class="message ${getCurrentUserClass(
-     message.user )}">
+    <strong>
      ${message.userName}
     </strong>: ${message.content} `)
- );
+)
 };
-let getCurrentUserClass = (id) => {
- let userId = $("#chat-user-id").val();
- return userId === id ? "current-user": ""; 
-};
-    
-})
-  
-</script>
-</head>
-<body>
-    <div class="container">
-        <h1>Chat</h1>
-        <form id="chatForm"> 
-        <input id="chat-input" type="text"> 
-        <input type="submit" value="Send">
-        </form>
-        <div id="chat"></div> 
-       </div>
 
-      
-</body>
-</html> -->
 
-<!doctype html>
-<html>
-  <head>
-    <title>Socket.IO chat</title>
-    <link rel="stylesheet" type="text/css" href="../public/css/chat.css">
-    <script src="/socket.io/socket.io.js"></script>
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script>
-  $(function () {
-    var socket = io();
-    $('form').submit(function(e) {
-      e.preventDefault(); // prevents page reloading
-      socket.emit('chat message', $('#m').val());
-      $('#m').val('');
-      return false;
+
+  socket.on('newmsg', function(data) {
+     if(user) {
+     displayMessage(data)
+     }else{return false}
+  })
+
+  socket.on("load all messages", data => {
+    data.forEach(message => {
+     displayMessage(message)
     });
-
-    socket.on('chat message', function(msg){
-      $('#messages').append($('<li>').text(msg));
-    });
-
- 
   });
 </script>
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font: 13px Helvetica, Arial; }
-      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-      form input { border: 0; padding: 10px; width: 90%; margin-right: 0.5%; }
-      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-      #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages li { padding: 5px 10px; }
-      #messages li:nth-child(odd) { background: #eee; }
-    </style>
-  </head>
-  <body>
-    <ul id="messages"></ul>
-    <form action="">
-    
-      <input id="m" autocomplete="off" /><button>Send</button>
-    </form>
-  </body>
-</html>
+ 
+   <body>
+      <h1>Chat box</h1>
+    <div id = "error-container"></div>
+    <div id='chat-section'>
+      <form id="chatForm">
+         <input id="message" name='message'type="text">
+        
+         <button type = "button" name = "button" onclick = "sendMessage()">
+            Send
+         </button>
+       </form>
+      </div>
+   <div id="username-req">
+    <input id = "name" type = "text" name = "name" value = "" 
+       placeholder = "Enter your name!">
+    <button type = "button" name = "button" onclick = "setUsername()">
+       Join chat
+    </button>
+   </div>
+   <div id='message-container'>
+     
+       <div id="chat"></div>
+   </div>
+  
+   </body> 
