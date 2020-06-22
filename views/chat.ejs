@@ -1,79 +1,4 @@
-<!-- <!DOCTYPE html>
-<html>
-<head>
-<script src="/socket.io/socket.io.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  
-<link rel="stylesheet" type="text/css" href="../public/css/chat.css">
 
-<script>
-const socket = io()
-
-  $(document).ready(() => {
-    
-    $("#chatForm").submit(() => {
-      text = $("#chat-input").val(); 
-      userId = $("#chat-user-id").val(); 
-      userName = $("#chat-user-name").val(), 
-      socket.emit("message",{
-          content: text,
-          userName: userName,
-          userId: userId
-          
-      });
-    
-    
-      $("#chat-input").val("");
-      return false;
-    });
-  
-    socket.on("message", message => {
-      displayMessage(message);
-    });
-
-    socket.on("load all messages", data => {
-    data.forEach(message => {
-      displayMessage(message);
-    });
-  });
-  
-    let displayMessage = (message) => {
- $("#chat").prepend(
- $("<li>").html(`
-    <strong class="message ${getCurrentUserClass(
-     message.user )}">
-     ${message.userName}
-    </strong>: ${message.content} `)
- );
-};
-let getCurrentUserClass = (id) => {
- let userId = $("#chat-user-id").val();
- return userId === id ? "current-user": ""; 
-};
-    
-})
-  
-</script>
-</head>
-<body>
-  <div class='container'>
-      
-        <h1>Chat</h1>
-        <form id="chatForm">
-          <input id="chat-input" type="text">
-         
-          <input type="submit" class="button" value="Send">
-        </form>
-        <div id="chat"></div>
-        
-      </div>
-
-      
-</body>
-</html> -->
-
-
-<!-- third ver -->
 <link rel="stylesheet" type="text/css" href="../public/css/chat.css">
 <script src = "/socket.io/socket.io.js"></script>
 <script>
@@ -143,7 +68,7 @@ let getCurrentUserClass = (id) => {
     <input id = "name" type = "text" name = "name" value = "" 
        placeholder = "Enter your name!">
     <button type = "button" name = "button" onclick = "setUsername()">
-       Let me chat!
+       Join chat
     </button>
    </div>
    <div id='message-container'>
