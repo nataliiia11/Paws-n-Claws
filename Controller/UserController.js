@@ -1,26 +1,18 @@
-/* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
 'use strict';
 const Users = require('../model/User');
-const Posts = require('../model/Posts');
-const bcrypt = require('bcrypt');
-// eslint-disable-next-line no-unused-vars
+
+const bcrypt = require("bcrypt");
+//In order to be able to authenticate user login data with passport, we also need to add this
+//package inside the controller. Auth action from passport is called authenticate.
 const passport = require('passport');
 const httpStatus = require('http-status-codes');
-const { body, check, validationResult } = require('express-validator');
-const getUserParams= body => { 
-	return {
-		username: body.username,
-		email: body.email,
-		password: body.password,
-	};
-};
+
 //initialize database
 const mongoose = require('mongoose');
+const { response } = require('express');
 mongoose.connect('mongodb+srv://admin-hanh:hanh@cluster1-yhbkr.mongodb.net/PawsAndClaws', () => {
 	Users.init();
-}
-);
+});
 module.exports={
 	index: (req, res, next) => {
 		Users.find()
@@ -49,50 +41,6 @@ module.exports={
 			});
 	},
 
-	saveUser : (req, res) => {
-		var password = '';
-		if(req.body.password != '') password = bcrypt.hashSync(req.body.password, 10);
-		console.log(req.body.password);
-		let user = {
-			'username' : req.body.username,
-			'email'  : req.body.email,
-			'password' : password};
-
-		const newUser = new Users(user);
-
-		newUser.save(newUser, (err, result) => {
-			if (err) {
-				return res.send(false);
-			}
-			return res.send(true);
-		});
-	},
-
-
-
-
-	create:(req, res, next) => {
-		let userParams = getUserParams(req.body);
-		console.log(userParams);
-		Users.create(userParams)
-			.then(user => {
-				req.flash('success', `${user.username}'s account created
-   successfully!`); 
-				res.locals.redirect = `/users/${user.username}`;
-				res.locals.user = user;
-				next();
-			})
-			.catch(error => {
-				console.log(`Error saving user: ${error.message}`);
-				res.locals.redirect = '/users/signup';
-				req.flash(
-					'error',
-					`Failed to create user account because: ${error.message}.` 
-				);
-				next();
-			});
-	},
-
 	redirectView:(req, res, next) => {
 		let redirectPath = res.locals.redirect;
 		if (redirectPath) res.redirect(redirectPath);
@@ -101,181 +49,43 @@ module.exports={
 	},
 
 
-
-	signIn: (req,res,next) => {
-		const userPage=req.params.page;
-		res.type('application/json');
+	findUser: (req,res,next) => {
 		Users.findOne({'email' : req.body.email})
 			.then((result) => {
-				if(result == null) return res.send(JSON.stringify({'result' : false}));
-				const dbPassword = result.password;
-				bcrypt.compare(req.body.password, dbPassword, (err, result) => {
-					if (err) throw err;
-					result = JSON.stringify(
-						{
-							'result' : true,
-							'token' : dbPassword
-						}
-					);
-					console.log(result);
-					return res.redirect(`/${result.username}`);
-            
-				});
+				if (result) req.found = true;
+				else req.found = false;
 				next();
 			}); 
 	},
 
+	signIn: (req,res,next) => {
 
-   
-
- 
-
-	validate:(req, res, next) => {
-		req
-			.sanitizeBody('email')
-			.normalizeEmail({
-				all_lowercase: true
-			})
-			.trim();
-		req.check('email', 'Email is invalid').isEmail();
-		req.check('password', 'Password cannot be empty').notEmpty();
-
-		req.getValidationResult().then(error => {
-			if (!error.isEmpty()) {
-				let messages = error.array().map(e => e.msg);
-				req.skip = true;
-				req.flash('error', messages.join(' and '));
-				res.locals.redirect = '/users/signup';
-				next();
-			} else {
-				next();
-			}
-		});
-	},
-	authenticate: (req, res, next) => {
-		Users.findOne({ email: req.body.email })
-			.then(user => {
-				if (user) {
-					user.passwordComparison(req.body.password).then(passwordsMatch => {
-						if (passwordsMatch) {
-							res.locals.redirect = `/users/${user.username}`;
-							req.flash('success', `${user.username}'s logged in successfully!`);
-							res.locals.user = user;
-							
-						} else {
-							req.flash('error', 'Failed to log in user account: Incorrect Password.');
-							res.locals.redirect = '/users/signin';
-							console.log('false pass');
-						}
-						next();
-					});
-				} else {
-					req.flash('error', 'Failed to log in user account: User account not found.');
-					res.locals.redirect = '/';
-					console.log('not found');
-					next();
-				}
-			})
-			.catch(error => {
-				console.log(`Error logging in user: ${error.message}`);
-				next(error);
-			});
 	},
 
-
-	//   show: (req, res, next) => {
-	//     let userId = req.params.id;
-	//     Users.findById(userId)
-	//       .then(user => {
-	//         res.locals.user = user;
-	//         next();
-	//       })
-	//       .catch(error => {
-	//         console.log(`Error fetching user by ID: ${error.message}`);
-	//         next(error);
-	//       });
-	// },
-	// showView:(req, res) => {
-	//     res.render("users/show");
-	//   },
-	
-	  update: (req, res, next) => {
+	updateUserData: (req, res, next) => {
 		let username = req.params.page,
-		  userParams = {
-			username: username,
+			newData = {
+			username: req.body.username,
 			email: req.body.email,
 			password: req.body.password,
 		
-		  };
+			};
 		Users.findOneAndUpdate(username, {
-		  $set: userParams
+			$set: newData
 		})
-		  .then(user => {
-			res.locals.redirect = `/users/${userId}`;
+			.then(user => {
+			res.locals.redirect = `/users/${username}`;
 			res.locals.user = user;
+			req.flash("success", "user profile updated");
 			next();
-		  })
-		  .catch(error => {
+			})
+			.catch(error => {
 			console.log(`Error updating user by ID: ${error.message}`);
+			req.flash("error", "user profile not updated");
 			next(error);
-		  });
-	  },
-	updateUserData :(req, res) => {
-		var newUsername = req.body.newUsername;
-		var username = req.body.username;
-		var email = req.body.email;
-		var newPassword = bcrypt.hashSync(req.body.newPassword, 10);
-		var oldPassword = req.body.password;
-		var token = req.body.token;
-
-		if(newUsername.length == 0) newUsername = username;
-		if(newPassword.length == 0) newPassword = password;
-		if(newUsername.length == 0 && newPassword.length == 0 && email.length == 0) return res.send(false);
-		let user;
-		if(email.length != 0) {
-			user = { 
-				'username' : newUsername,
-				'email' : email,
-				'password' : newPassword
-			};
-		}
-		else  {
-			user = {
-				'username' : newUsername,
-				'password' : newPassword
-			};
-		}
-    
-		console.log(JSON.stringify(user));
-		bcrypt.compare(token, oldPassword, (result, err) => {
-			if (err) throw err;
-			Users.updateOne(
-				{'username' : username},
-				user
-			).then((result, error) => {
-				if (error) {
-					console.log(error);
-					return res.send(false);
-				}
-				if(result.n == 0)
-					return res.send(false);
-				return res.locals.redirect(`/users/${user.username}`);
-        
 			});
-		}); 
 	},
-
-
-   
-
-   
-
-	// authenticate:passport.authenticate("local", {
-	//     failureRedirect: "/",
-	//     failureFlash: "Failed to login.",
-	//     successRedirect: "/",
-	//     successFlash: "Logged in!"
-	//   }),
+	
 	logout:(req, res, next) => {
 		req.session.destroy();
 		req.logout();
@@ -314,4 +124,90 @@ module.exports={
 		res.json(errorObject);
 	},
 
+	//New implementation of the controller
+	getUserWithUsernameWithParam : (req,res,next) => {
+		Users.find({username : req.params.username}, (err, findResult) => {
+			if (err) throw err;
+			req.foundUser = findResult;
+			next();
+		});
+	},
+	
+	createNewUserAccount : (req,res,next) => {
+		//password field can be removed since passport is now responsible for it
+		let newUser = new Users({
+			username : req.body.username,
+			email : req.body.email
+		});
+
+		/*
+			Now instead of using newUser.save(), we can use User(database's table name).register which method comes from passport.js
+			newUser.save()
+			.then(() => {
+				console.log("new user is added to the database");
+			})
+			.catch(() => {
+				console.log("error adding new user");
+			});
+		*/
+		//Register the user
+		Users.register(newUser, req.body.password, (error, user) => {
+			if(user) {
+				req.flash("registered", "account created");
+			} else {
+				req.flash("errorRegister", error.message);
+			}
+			res.render("index");
+		})
+	},
+
+	// Check more : http://www.passportjs.org/docs/authenticate/
+	// In order for passport.authenticate() to work inside a function,
+	// adding (req,res,next); ath the end of authenticate() is needed.
+	// passport.authenticate()(req,res,next);
+	auth : function(req,res,next) {
+		passport.authenticate('local', (errors, user, info) => {
+			if(errors) throw errors;
+			if(user) {
+				req.user = user;
+				next();
+			} else {
+				req.flash("notAuthed", info.message)
+				res.json({loggedIn : false});
+			}
+		})(req,res,next);
+	},
+
+	//Middle ware of what happens after the user is authenticated and logged in
+	afterAuth : (req,res,next) => {
+		if(req.user) {
+			req.session.loggedIn = true;
+			req.session.currentUser = req.user;
+			res.json(
+				{
+					loggedIn : req.session.loggedIn, 
+					user : req.session.currentUser
+				}
+			);
+		}
+	},
+
+	//Pass the route to postController if user logged in
+	passToPostController : (req,res,next) => {
+		if(req.session.currentUser)
+			next();
+		else {
+			req.flash("notLoggedIn", "Please log in!");
+			res.render("index");
+		}
+	},
+	//Gives user detail to the client
+	getUserDetail : (req,res,next) => {
+		const user = req.session.currentUser;
+		Users.findOne({
+			username : user.username
+		}, (error, savedDocument) => {
+			res.json(savedDocument);
+		});
+	}
 };

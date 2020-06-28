@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 var postSchema = mongoose.Schema({
 	content : String,
 	signInUser: String
-    
 });
 
 

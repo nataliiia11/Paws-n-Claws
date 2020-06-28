@@ -1,140 +1,33 @@
-
-<script>
-  $(document).ready(function () {
-    var readURL = function (input) {
-      if (input.files && input.files[0]) {
-        var reader = new FileReader();
-        reader.onload = function (e) {
-          $('.profile-pic').attr('src', e.target.result);
-        }
-        reader.readAsDataURL(input.files[0]);
-      }
-    }
-    $(".file-upload").on('change', function () {
-      readURL(this);
-    });
-    $(".upload-button").on('click', function () {
-      $(".file-upload").click();
-    });
-    var updateProfile = function() {
-      var xhr = new XMLHttpRequest();
-      var path = "/" + sessionStorage.getItem("username");
-      xhr.open('PUT', "/user/update", true);
-      xhr.setRequestHeader("content-type", "application/json;charset=UTF-8");
-      xhr.send(
-        JSON.stringify(
-          {
-          "newUsername" : document.getElementById("username").value,
-          "username" : sessionStorage.getItem("username"),
-          "email" : document.getElementById("email").value,
-          "newPassword" : document.getElementById("new-password").value,
-          "password" : document.getElementById("password").value,
-          "token" : sessionStorage.getItem("token")
-          }
-        )
-      );
-      xhr.onreadystatechange = function() {
-        if(xhr.status == 200 && xhr.readyState == 4) {
-          if(xhr.response == "true")  {
-            window.alert("Profile updated");
-           // location.reload();
-           location.replace("/" + sessionStorage.getItem("newUsername"));
-          }
-          else document.getElementById("result").innerHTML = "Wrong password/Invalid input";
-        }
-      }
-    }
-  });
-  var editProfile = function () {
-    document.getElementById("post-form").style.display = "none";
-    document.getElementById("update-container").style.display = "block";
-  }
-  var closeUpdateForm = function () {
-                document.getElementById("update-container").style.display = "none";
-                document.getElementById("post-form").style.display = "block";
-            }
-</script>
-
-<style>
-#update-container{
-  display: none;
-  z-index: 3;
-  position: fixed;
-  top: 0;
-  left: 0;
-}
-#close-update-form-container-button {
-    position: absolute;
-    right: 10vw;
-    top: 10vh;
-    color: rgba(202, 189, 169,1);
-    font-weight: bolder;
-    font-size: 36px;
-    cursor: pointer;
-}
-#edit-profile-form-container{
-    display: flex;
-    height: 100vh;
-    width: 100%;
-    z-index: 2;
-    position: fixed;
-    background: rgba(152, 139, 119,1);
-}
-#update-form {
-    position: absolute;
-    transform: translate(-50%, -50%);
-    top: 50%;
-    left: 50%;
-    display: flex;
-    flex-direction: column;
-}
-#username-container, #password-container,#email-container,#new-password-container{
-    min-width: 200px;
-    width: 25vw;
-    background: rgba(152, 139, 119,1);
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    padding-bottom: 10px;    
-    color: rgba(202, 189, 169,1);
-}
-#username-container > input, #password-container > input, #email-container>input, #new-password-container > input{
-    background: rgba(152, 139, 119,1);
-    border: none;
-    color: rgba(202, 189, 169,1);
-    border-bottom: 1px solid;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    outline: none;
-}
-#username-container > input::placeholder, #password-container > input::placeholder, #email-container > input::placeholder, #new-password-container > input::placeholder {
-    color: rgba(172, 159, 139,1);
-    font-weight: bolder;
-    font-size: 16px;
-}
-#update-button {
-    min-width: 200px;
-    width: 25vw;
-    background: rgba(172, 159, 139,0.5);
-    border: none;
-    height: 50px;
-    border-radius: 25px;
-    color: rgba(202, 189, 169,1);
-    text-align: center;
-}
-#username-container > input:focus, #username-container > input:focus::placeholder, #password-container > input:focus, #password-container > input:focus::placeholder,#email-container > input:focus, #email-container > input:focus::placeholder, #new-password-container >input:focus, #new-password-container > input:focus::placeholder {
-    color: rgba(222, 209, 189,1);
-}
-#username-container > input:focus, #password-container > input:focus, #email-container > input:focus, #new-password-container > input:focus {
-    border-bottom: 2px solid;
-}
-</style>
+<link rel="stylesheet" type="text/css" href="../public/css/personal.css">
+<script src="../public/js/personal.js"></script>
 <link rel="stylesheet" type="text/css" href="../public/css/home.css">
-<link rel="stylesheet" type="css/text" href="../public/css/personal-style.css">
+<script> 
+  let currentUser;
+  window.addEventListener("load", () => {
+
+    //GETS THE DATA FROM SERVER (USERNAME)
+    fetch("/user/personal/data", {
+      method:"GET"
+    }).then( Response => {
+      Response.json()
+      .then(Data => {
+        currentUser = Data;
+        document.getElementById("username-container").innerText = currentUser.username;
+      })
+    }).then(
+
+      //IF USER FOUND THEN GET THE POSTS, POSTED BY THE NAMED USER
+      fetch("/posts", {
+        method: 'get'
+      })
+    ).then(
+      fetch("/newsfeed", {method:'GET'})
+    );
+  });
+</script>
 <body>
   
-  <form id="post-form" action='/users/<%=page%>' method='post'>
-
+  <form id="post-form">
 
     <div class="container-fluid">
       <div class="row">
@@ -145,12 +38,13 @@
             <div class="upload-button">
               <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
             </div>
-            <form action="/upload" method="post" enctype="multipart/form-data">
+            <!-- action="/upload" method="post" -->
+            <form  enctype="multipart/form-data">
               <input class="file-upload" type="file" accept="image/*" name="photo" />
               <input type='submit' value='upload' />
             </form>
           </div>
-          <h4><%=userName%></h4>
+          <h4 id="username-container"></h4>
         </div>
         <div class="col-6">
           <%- include('partials/post'); -%>
@@ -194,27 +88,38 @@
       </div>
     </div>
   </form>
-
+  <div id="update-feedback">
+    <% if(flashMessages) { %>
+      <% if(flashMessages.success) { %>
+        <div><%= flashMessages.success %></div>
+      <% } else { %>
+        <div><%= flashMessages.error %></div>
+      <% } %>
+    <% } else { %>
+      <div>No flash message detected</div>
+    <% } %>
+  </div>
+  
   <div id = "update-container">
     <div id="edit-profile-form-container">
       <span id="close-update-form-container-button" onclick="closeUpdateForm()">&#10006;</span>
-      <form action="/users/<%=userName%>/update" method="post" id="update-form">
+      <form id="update-form">
         <section id="username-container">
             <label>Username</label>
             <Input id="username" type="text" name="username" placeholder="username"></Input>
         </section>
         <section id="email-container">
-            <lable>Email</lable>
+            <lable>Email</lable>  
             <Input id="email" type="text" name="email" placeholder="email"></Input>
         </section>
         <section id="new-password-container">
             <lable>New Password</lable>
-            <Input id="new-password" type="password" name="password" placeholder="new password"></Input>
+            <Input id="password" type="password" name="password" placeholder="new password"></Input>
         </section>
-        <section id="password-container">
+        <!-- <section id="password-container">
           <lable>Password</lable>
           <Input id="password" type="password" name="password" placeholder="password"></Input>
-        </section>
+        </section> -->
         
         <button type="submit" id="update-button" value="Update">Update</button>
         <span id = "result"></span>

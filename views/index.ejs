@@ -2,103 +2,24 @@
 <html lang="en">
 
     <head>
-        <meta name="viewport" content="width=device-width">
-        <!-- <title>Paws And Claws</title> -->
-        
-        <link rel="stylesheet" type="text/css" href="../public/css/home.css">
-        <script>
-            window.onload = () => {
-                console.log("windows loaded"); 
-                document.getElementById("login-form-container").style.display = "none";
-                document.getElementById("parallax").style.display = "flex";               
-            }
-            
-            var showLoginForm = function () {
-                document.getElementById("login-form-container").style.display = "flex";
-                document.getElementById("username").focus();
-                document.getElementById("parallax").style.display = "none";    
-            }
-            
-            var closeLoginForm = function () {
-                document.getElementById("login-form-container").style.display = "none";
-                document.getElementById("parallax").style.display = "flex"; 
-                
-                document.getElementById("sign-in-button").style.display = "block";
-                document.getElementById("sign-up-button").style.display = "none";
-            }
-            var signUpButton = function () {
-                document.getElementById("email-container").style.display = "flex";
-                document.getElementById("sign-in-button").style.display = "none";
-                document.getElementById("sign-up-button").style.display = "block";
-            }
-            var showAll = function () {
-                var xhr = new XMLHttpRequest();
-                xhr.open('Get', "/user", true);
-                xhr.send();
-                xhr.onreadystatechange = function() {
-                    if(xhr.readyState == 4 && xhr.status == 200) {
-                        var result = JSON.stringify(xhr.response);
-                        console.log(result);
-                    }
-                }
-            }
-            var signIn = function () {
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', "/user/signin/", true);
-                xhr.setRequestHeader("content-type", "application/json;charset=UTF-8");
-                xhr.send(JSON.stringify({
-                    "username" : document.getElementById("username").value,
-                    "password" : document.getElementById("password").value
-                }))
-                xhr.onreadystatechange = function() {
-                    if(xhr.readyState == 4 && xhr.status == 200) {
-                        response = JSON.parse(xhr.response);
-                        console.log(response.result)
-                        console.log(response.token)
-                        if(response.result == "false") {
-                            window.alert("Wrong username or password");
-                        } else{
-                            sessionStorage.setItem("username", document.getElementById("username").value);
-                            sessionStorage.setItem("token", response.token)
-                            console.log(sessionStorage.getItem("username") + "  " + sessionStorage.getItem("token"))
-                            location.replace("/" + sessionStorage.getItem("username"));
-                        }
-                    }
-                }
-            }
-            var signUp = function() {
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', "/user/signup/", true);
-                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-                xhr.send(JSON.stringify({
-                    "username" : document.getElementById("username").value,
-                    "email" : document.getElementById("email").value,
-                    "password" : document.getElementById("password").value
-                }))
-                xhr.onreadystatechange = function () {
-                    if(xhr.readyState == 4 && xhr.status == 200) {
-                        if(xhr.response == "false") {
-                            window.alert("Please fill all the spaces!\nor\nUsername and Email is already registered!")
-                        } else {
-                            document.getElementById("sign-in-button").style.display = "block";
-                            document.getElementById("sign-up-button").style.display = "none";
-                            document.getElementById("email-container").style.display = "none";
-                        }
-                    }
-                }
-            }
-        </script>
-       
-       
-       
+        <meta name="viewport" content="width=device-width">     
+        <link rel="stylesheet" type="text/css" href="../public/css/home.css">       
     </head>
 
     <body>
-        <!-- <section id="header">
-             <h1>Paws And Claws</h1>
+        <section id="flash-message-sigin-signup">
+            <% if(flashMessages) { %>
+                <%if(flashMessages.registered) {%>
+                    <%= flashMessages.registered %>
+                <%} else if(flashMessages.errorRegister) {%>
+                    <%=flashMessages.errorRegister %> 
+                <%} else if(flashMessages.notLoggedIn) {%>
+                    <%=flashMessages.notLoggedIn %> 
+                <%} else if(flashMessages.notAuthed) {%>
+                    <%=flashMessages.notAuthed %> 
+                <%}%>
+           <% }%>
         </section>
-      -->
-    
         <div id="parallax">
             <section class = "highlights">
                 <div class="highlights-background">
@@ -124,13 +45,11 @@
                 </div>
             </section>
         </div>
-        <form action='/users/signin/' method='get'>
         <div id="login-container">
-            
-            <button id="login-direction" type='submit'>Login to start Using</button>
-            <!-- <div id="login-form-container">
-                <span id="close-login-form-container-button" onclick="closeLoginForm()">&#10006;</span>
-                <form action="/users/signin" method="post" id="login-form">
+            <span id="login-direction">Login to start using</span>
+            <div id="login-form-container">
+                <span id="close-login-form-container-button">&#10006;</span>
+                <form id="login-form">
                     <section id="username-container">
                         <label>Username</label>
                         <Input id="username" type="text" name="username" placeholder="username"></Input>
@@ -144,14 +63,12 @@
                         <Input id="password" type="password" name="pass" placeholder="password"></Input>
                     </section>
 
-                  
-                    <input type="button" id="sign-in-button" value="Sign In" onclick="signIn()"></input>
-                    <input type="button" id="sign-up-button" value="Sign Up" onclick="signUp()"></input>
-                    <a id="signup">Haven't got an account yet? <span onclick="signUpButton()">sign up</span></a> -->
-               
-            <!-- </div> -->
-        </form>
+                    <input type="button" id="sign-in-button" value="Sign In"></input>
+                    <input type="button" id="sign-up-button" value="Sign Up"></input>
+                    <a id="signup-prompt-container">Haven't got an account yet? <span id="signup">sign up</span></a>
+                </form>
+            </div>
         </div>
-    </form>
+    <script src="../public/js/index.js"></script>
     </body>
 </html>

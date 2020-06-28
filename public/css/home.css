@@ -2,6 +2,13 @@
     background:linear-gradient(to bottom right, white, #ded1bd);
     margin: 0;
 } */
+
+#flash-message-sigin-signup {
+    text-align: center;
+    background: #683b2b;
+    color: white;
+}
+
 #header{
     background: #683b2b;
     margin:  0;
@@ -170,9 +177,9 @@ h1{
     text-align: center;
 }
 
-/* #sign-up-button {
+#sign-up-button, #email-container {
     display: none;
-} */
+}
 
 #username-container > input:focus, #username-container > input:focus::placeholder, #password-container > input:focus, #password-container > input:focus::placeholder,#email-container > input:focus, #email-container > input:focus::placeholder {
     color: rgba(222, 209, 189,1);
@@ -182,19 +189,19 @@ h1{
     border-bottom: 2px solid;
 }
 
-#signup {
+#signup-prompt-container {
     padding-top: 10px;
     text-align: center;
     color: rgba(202, 189, 169,1);
 }
 
-#signup > span {
+#signup {
     color: white;
     font-weight: bold;
     padding: 10px;
 }
 
-#signup > span:hover {
+#signup:hover {
     cursor: pointer;
 }
 

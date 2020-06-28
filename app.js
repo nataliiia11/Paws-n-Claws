@@ -1,28 +1,24 @@
 'use strict';
 const express=require('express');
-const path = require('path');
 // eslint-disable-next-line no-unused-vars
-const bodyParser = require('body-parser');
+const app= new express();
 const router=express.Router();
 const morgan = require('morgan');
-const passport = require('passport'); 
 const layouts = require('express-ejs-layouts');
 const methodOverride = require('method-override');
-const app= new express();
-const multer = require('multer');
-const upload = multer({dest: __dirname + '/uploads/images'});
 const expressSession = require('express-session');
 const expressValidator = require( 'express-validator'); 
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
-const postController = require('./Controller/postController');
 const errorController = require('./Controller/errorController');
-const userController = require('./Controller/UserController');
-const homeController=require('./Controller/homeController');
-var User = require('./model/User');
+const passport = require('passport'); 
+const User = require("./model/User");
 
+const path = require("path");
 
-app.use('/public', express.static(path.join(__dirname,'public')));
+app.use("/public", express.static(path.join(__dirname, "public")));
+app.use(express.static('public'));
+
 app.use(
 	express.urlencoded({
 		extended: false
@@ -31,10 +27,8 @@ app.use(morgan(':method:url:status*:response-time ms'));
 
 
 app.set('view engine','ejs');
-router.use(express.static('public'));
-router.use(layouts);
-router.use(express.urlencoded({extended:false}));
-router.use(
+app.use(layouts);
+app.use(
 	methodOverride('_method', {
 	// eslint-disable-next-line no-mixed-spaces-and-tabs
 	  methods: ['POST', 'GET']
@@ -43,10 +37,10 @@ router.use(
 
 
 
-router.use(express.json());
+app.use(express.json());
 
-router.use(cookieParser('secret_passcode')); 
-router.use(expressSession({
+app.use(cookieParser('secret_passcode')); 
+app.use(expressSession({
 	secret: 'secret_passcode',
 	cookie: {
 		maxAge: 4000000
@@ -56,20 +50,24 @@ router.use(expressSession({
 })); 
 
 
- 
- 
-router.use(passport.initialize()); 
-router.use(passport.session()); 
-passport.use(User.createStrategy()); 
-passport.serializeUser(User.serializeUser()); 
+//Initialize passport to the router
+app.use(passport.initialize());
+//This is to tell passport to use any session set up to the project. Session must be defined before this line.
+app.use(passport.session());
+
+//This configures the login strategy of the user.
+passport.use(User.createStrategy());
+//Serialize data from user model.
+passport.serializeUser(User.serializeUser());
+//Deserialize data from user model.
 passport.deserializeUser(User.deserializeUser());
+/*
+In order for passport to work, we need to add passport-local-mongoose to User model.
+*/
 
 
-
-
-
-router.use(flash());
-router.use((req, res, next) => {
+app.use(flash());
+app.use((req, res, next) => {
 	res.locals.loggedIn = req.isAuthenticated();
 	res.locals.currentUser = req.user;
 	res.locals.flashMessages = req.flash();
@@ -81,47 +79,28 @@ require('dotenv').config();
 const port = process.env.PORT || ((process.env.NODE_ENV === 'test') ? 3001 : 3000);
 app.set('port', port);
 
-//const posts=[];
 
-router.get('/chat', homeController.chat);
-router.get('/newsfeed', postController.getAllPostsNewsfeed);
-//app.get('/:page',userController.authenticate,postController.getAllPostsPersonal);
-//res.redirect('/personal/'+definedPage,{newPost:posts,page:'personal'});
-//router.get('/personal',postController.getAllPostsPersonal);
+//-------------------------------FROM HERE IS ROUTER----------------------------------//
+const userRouter = require("./routes/userRoutes");
+const userRoutes = require("./routes/userRoutes");
+const homeRouter = require("./routes/homeRoutes");
+const postRouter = require("./routes/postRoutes");
 
-
-// router.get('/',(req,res)=>{
-// 	res.render('index');
-// });
-router.get('/api', userController.index);
-router.get('/',homeController.index);
-router.get('/users', userController.index, userController.indexView);
-router.get('/users/signin',userController.signin);
-router.get('/users/signup',userController.signup);
-router.post('/users/signup',userController.validate,userController.create,userController.redirectView);
-router.post('/users/signin',userController.authenticate,userController.redirectView);
-router.get('/logout',userController.logout);
-router.post('/users/:page/update', userController.updateUserData,userController.redirectView);
-router.get('/chat', homeController.chat);
-router.get('/users/:page',postController.getAllPostsPersonal);
-
-
-router.post('/users/:page/delete',postController.deletePost);
+//------------------------------FROM HERE USE ROUTER----------------------------------//
+app.use("/user", userRouter);
+app.use("/", homeRouter);
+app.use("/", postRouter);
 
 
 
-router.post('/users/:page',postController.savePost);
-router.post('/upload', upload.single('photo'), (req, res) => {
-	if(req.file) {
-		res.json(req.file);
-	}
-	else throw 'error';
-});
-router.put('/:page',userController.updateUserData,userController.redirectView);
+
+
+
 //app.post('/users/:id', userController.delete)
 router.use(errorController.logErrors);
 router.use(errorController.respondNoResourceFound);
 router.use(errorController.respondInternalError);
+
 app.use('/', router);
 
 module.exports = app;
