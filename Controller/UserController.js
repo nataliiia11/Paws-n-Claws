@@ -8,6 +8,7 @@ const bcrypt = require('bcrypt');
 const passport = require('passport');
 const httpStatus = require('http-status-codes');
 const { body, check, validationResult } = require('express-validator');
+const token = process.env.TOKEN ||"meowtheworld"
 const getUserParams= body => { 
 	return {
 		username: body.username,
@@ -99,7 +100,10 @@ module.exports={
 		else next();
 
 	},
-
+	verifyToken: (req, res, next) => { 
+		if (req.query.apiToken === token) next(); 
+		else next(new Error("Invalid API token.")); 
+	   },
 
 
 	signIn: (req,res,next) => {

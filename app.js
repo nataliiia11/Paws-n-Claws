@@ -2,6 +2,7 @@
 const express=require('express');
 const path = require('path');
 // eslint-disable-next-line no-unused-vars
+const apiRoutes=require('././routes/apiRoutes')
 const bodyParser = require('body-parser');
 const router=express.Router();
 const morgan = require('morgan');
@@ -122,6 +123,7 @@ router.put('/:page',userController.updateUserData,userController.redirectView);
 router.use(errorController.logErrors);
 router.use(errorController.respondNoResourceFound);
 router.use(errorController.respondInternalError);
+app.use("/api", apiRoutes);
 app.use('/', router);
 
 module.exports = app;

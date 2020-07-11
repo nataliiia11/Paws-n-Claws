@@ -17,23 +17,41 @@ I tried to create it in separate file called js/recipeApp.js directory, but I fa
 $(document).ready(() => {  
 	$('#modal-button').click(() => {    
 		$('.modal-body').html('');    
-		$.get('/users?format=json', (data) => { 
-			data.forEach((user) => { 
-				$('.modal-body').append( `
-				<div>
-					<span class="users-username"> ${user.username}  </span>
-					<div class="users-email"> ${user.email} </div>
-				</div>` );
-			});    
-		});  
-	}); 
+		// $.get('/users?format=json', (data) => { 
+		// 	data.forEach((user) => { 
+		// 		$('.modal-body').append( `
+		// 		<div>
+		// 			<span class="users-username"> ${user.username}  </span>
+		// 			<div class="users-email"> ${user.email} </div>
+		// 		</div>` );
+		// 	});    
+		// });  
+		$.get("/api/users", (results = {}) => {
+ let data = results.data; 
+ if (!data || !data.users) return; 
+ data.users.forEach((user) => { 
+ $(".modal-body").append(
+ `<div>
+ <span class="course-title">
+ ${user.username}
+ </span>
+ <div class='course-description'>
+ ${user.email}
+ </div>
+ </div>`
+ );
+ });
 });
+
+});
+	}); 
+
+
 </script>
 </head>
 
 <body>
-	<li><%- include('users/usersModal') -%></li>
-
+	<%- include('users/usersModal') -%>
 	<%- include('partials/header') -%>
 	
 	   
