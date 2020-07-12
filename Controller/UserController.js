@@ -96,7 +96,7 @@ module.exports={
 
 	redirectView:(req, res, next) => {
 		let redirectPath = res.locals.redirect;
-		if (redirectPath) res.redirect(redirectPath);
+		if (redirectPath !== undefined) res.redirect(303, redirectPath)
 		else next();
 
 	},
@@ -185,7 +185,18 @@ module.exports={
 				next(error);
 			});
 	},
-
+	delete: (req, res, next) => {
+		const userId = req.params.id
+		Users.findByIdAndRemove(userId)
+		  .then(() => {
+			res.locals.redirect = '/users'
+			next()
+		  })
+		  .catch(error => {
+			console.log(`Error deleting user by ID: ${error.message}`)
+			next()
+		  })
+	  },
 
 	//   show: (req, res, next) => {
 	//     let userId = req.params.id;
@@ -204,7 +215,7 @@ module.exports={
 	//   },
 	
 	  update: (req, res, next) => {
-		let username = req.params.page,
+		let userId = req.params.id,
 		  userParams = {
 			username: username,
 			email: req.body.email,
@@ -223,6 +234,23 @@ module.exports={
 			console.log(`Error updating user by ID: ${error.message}`);
 			next(error);
 		  });
+	  },
+	  updateUsername: (req, res, next) => {
+		const userId = req.params.id
+		const userParams = getUserParams(req.body)
+	
+		Users.findByIdAndUpdate(userId , userParams)
+		  .then(user => {
+			res.locals.redirect = `/users/${userParams.username}`
+			res.locals.user = user
+			next()
+		  })
+		  .catch(error => {
+			console.log('could not save user: ' + error.message)
+			req.flash('error', `Error updating user by ID: ${error.message}`)
+			res.locals.redirect = `/`
+			next()
+		  })
 	  },
 	updateUserData :(req, res) => {
 		var newUsername = req.body.newUsername;
