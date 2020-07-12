@@ -102,9 +102,11 @@ router.get('/users/signup',userController.signup);
 router.post('/users/signup',userController.validate,userController.create,userController.redirectView);
 router.post('/users/signin',userController.authenticate,userController.redirectView);
 router.get('/logout',userController.logout);
+router.put('/users/:id', userController.updateUsername, userController.redirectView)
 router.post('/users/:page/update', userController.updateUserData,userController.redirectView);
 router.get('/chat', homeController.chat);
 router.get('/users/:page',postController.getAllPostsPersonal);
+router.delete('/users/:id', userController.delete, userController.redirectView)
 
 
 router.post('/users/:page/delete',postController.deletePost);
