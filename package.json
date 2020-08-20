@@ -4,7 +4,7 @@
   "description": "To launch the application you need to install Nodejs first. Follow this link to download Nodejs : https://nodejs.org/en/\r After extracting the file open terminal and change the directory to the app folder.\r Type 'npm install' in the terminal install the necessary dependencies\r Type 'node app.js' to run the app",
   "main": "main.js",
   "dependencies": {
-    "bcrypt": "^4.0.1",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.5",
